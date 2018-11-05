@@ -57,5 +57,22 @@ router.get('/user', function (req, res) {
     res.status(200).json({userId: req.user.id});
 });
 
+router.get('/admin', function (req, res) {
+  if(! req.user){
+    res.status(401).send();
+    return;
+  }
+
+  if(req.user.id === "admin"){
+    res.status(200).json({userId: req.user.id});
+    return;
+  } else {
+    res.status(401).send();
+    return;
+  }
+
+});
+
+
 
 module.exports = router;

@@ -10,9 +10,7 @@ const Header = ({loading, userId, logout}) => {
         <NavLink to="/"><h2>Quiz game </h2></NavLink>
         <NavLink to="/" activeStyle={activeStyle} exact>Home</NavLink>
         {" | "}
-        <NavLink to="/play" activeStyle={activeStyle}>Play</NavLink>
-        {" | "}
-        <NavLink to="/quizzes" activeStyle={activeStyle}>Quizzes</NavLink>
+        {userId === "admin" ? <NavLink to="/quizzes" activeStyle={activeStyle}>Quizzes</NavLink> :  <NavLink to="/play" activeStyle={activeStyle}>Play</NavLink> }
         {" | "}
         <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
         {" | "}
@@ -26,10 +24,6 @@ const Header = ({loading, userId, logout}) => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <NavLink to="/"><h2>Quiz game </h2></NavLink>
         <NavLink to="/" activeStyle={activeStyle} exact>Home</NavLink>
-        {" | "}
-        <NavLink to="/play" activeStyle={activeStyle}>Play</NavLink>
-        {" | "}
-        <NavLink to="/quizzes" activeStyle={activeStyle}>Quizzes</NavLink>
         {" | "}
         <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
         {" | "}

@@ -9,16 +9,20 @@ export default function auth(state = initialState.userId, action) {
       });
     case types.SIGN_UP_SUCCESS:
       return Object.assign({}, state, {
-      userId: action.userId
-    });
+        userId: action.userId
+      });
     case types.LOGOUT_SUCCESS:
       return Object.assign({}, state, {
-      userId: action.userId
-    });
+        userId: action.userId
+      });
     case types.GET_USER_SUCCESS:
       return Object.assign({}, state, {
-      userId: action.userId
-    });
+        userId: action.userId
+      });
+    case types.GET_ADMIN_SUCCESS:
+      return Object.assign({}, state, {
+        userId: action.userId
+      });
     default:
       return state;
   }

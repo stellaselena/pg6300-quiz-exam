@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import * as quizActions from '../../actions/quizActions';
 import QuizForm from './QuizForm';
+import Forbidden from '../common/Forbidden';
 import {categoriesFormattedForDropdown, correctAnswersFormattedForDropdown} from '../../selectors/selectors';
 import toastr from 'toastr';
 
@@ -85,18 +86,22 @@ export class ManageQuizPage extends React.Component {
     if (this.state.redirect) {
       return <Redirect to="/quizzes" />;
     }
+    if (this.props.userId === "admin") {
+      return (
+        <QuizForm
+          quiz={this.state.quiz}
+          onChange={this.updateQuizState}
+          onSave={this.saveQuiz}
+          errors={this.state.errors}
+          allCategories={this.props.categories}
+          allCorrectAnswers = {this.props.correctAnswers}
+          saving={this.state.saving}
+        />
+      );
+    } else {
+      return <Forbidden/>
+    }
 
-    return (
-      <QuizForm
-        quiz={this.state.quiz}
-        onChange={this.updateQuizState}
-        onSave={this.saveQuiz}
-        errors={this.state.errors}
-        allCategories={this.props.categories}
-        allCorrectAnswers = {this.props.correctAnswers}
-        saving={this.state.saving}
-      />
-    );
   }
 }
 
@@ -106,6 +111,7 @@ ManageQuizPage.propTypes = {
   actions: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   correctAnswers: PropTypes.array.isRequired,
+  userId: PropTypes.string
 };
 
 function getQuizById(quizzes, id) {
@@ -124,6 +130,7 @@ function mapStateToProps(state, ownProps) {
   }
 
   return {
+    userId: state.auth.userId,
     quiz: quiz,
     categories: categoriesFormattedForDropdown(state.categories),
     correctAnswers: correctAnswersFormattedForDropdown([1,2,3,4])

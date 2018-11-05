@@ -135,6 +135,10 @@ class ManageQuizMatchPage extends React.Component {
       return <div className="container text-center"><h1>Loading...</h1></div>;
     }
 
+    if (!this.props.userId){
+      return <div className="container text-center"><h1>You have to login or register first in order to play!</h1></div>;
+    }
+
     return (
         <div>
           <QuizMatchPage 
@@ -162,8 +166,10 @@ ManageQuizMatchPage.propTypes = {
 };
 
 function mapStateToProps(state, ownProps){
+  debugger;
   return {
-    quiz: state.match.quiz
+    quiz: state.match.quiz,
+    userId: state.auth.userId
   };
 }
 

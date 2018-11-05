@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import * as quizActions from '../../actions/quizActions';
 import QuizList from './QuizList';
+import Forbidden from '../common/Forbidden';
 
 class QuizzesPage extends React.Component {
   constructor(props, context) {
@@ -17,32 +18,37 @@ class QuizzesPage extends React.Component {
     this.props.history.push('/quiz');
   }
 
-
-
   render() {
-    return (
-      <div className="container">
-        <h1>Quizzes</h1>
-        <input type="submit"
-               value="Add Quiz"
-               className="btn btn-primary"
-               onClick={this.redirectToAddQuizPage}/>
 
-        <QuizList quizzes={this.props.quizzes}/>
-      </div>
-    );
+    if (this.props.userId === "admin") {
+      return (
+        <div className="container">
+          <h1>Quizzes</h1>
+          <input type="submit"
+                 value="Add Quiz"
+                 className="btn btn-primary"
+                 onClick={this.redirectToAddQuizPage}/>
+
+          <QuizList quizzes={this.props.quizzes}/>
+        </div>
+      );
+    } else {
+      return <Forbidden/>
+    }
   }
 }
 
 QuizzesPage.propTypes = {
   actions: PropTypes.object.isRequired,
   quizzes: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  userId: PropTypes.string
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    quizzes: state.quizzes
+    quizzes: state.quizzes,
+    userId: state.auth.userId
   };
 }
 

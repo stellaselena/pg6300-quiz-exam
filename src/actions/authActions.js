@@ -17,7 +17,12 @@ export function getUserSuccess(userId){
   return{type: types.GET_USER_SUCCESS, userId};
 }
 
+export function getAdminSuccess(userId){
+  return{type: types.GET_ADMIN_SUCCESS, userId};
+}
+
 export function getUser(){
+  debugger;
   return async function (dispatch){
     dispatch(beginAjaxCall());
     const url = "api/user";
@@ -33,6 +38,24 @@ export function getUser(){
     else {
       const payload = await response.json();
       dispatch(getUserSuccess(payload.userId));
+      return 200;
+    }
+  };
+}
+
+export function getRole(){
+  return async function (dispatch){
+    debugger;
+    dispatch(beginAjaxCall());
+    const url = "api/admin";
+    const response = await fetch(url, { method: "get" });
+    if (response.status !== 200) {
+      dispatch(ajaxCallError(response.status));
+      return 401;
+    }
+    else {
+      const payload = await response.json();
+      dispatch(getAdminSuccess(payload.userId));
       return 200;
     }
   };

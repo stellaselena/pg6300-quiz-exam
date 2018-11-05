@@ -1,6 +1,11 @@
 
 //Dummy db, without proper way of handling passwords
-const users = new Map();
+const admin = {
+  id: "admin",
+  password: "admin"
+};
+const users = new Map([["admin", admin]]);
+
 
 function getUser(id){
     return users.get(id);

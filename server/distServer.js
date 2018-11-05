@@ -4,7 +4,7 @@ import open from 'open';
 import compression from 'compression';
 
 /*eslint-disable no-console */
-
+const port = 8080;
 const app = express();
 
 app.use(compression());
@@ -18,6 +18,6 @@ app.listen(function(err) {
   if (err) {
     console.log(err);
   } else {
-    open(`http://localhost:8080`);
+    open(`http://localhost:${port}`);
   }
 });

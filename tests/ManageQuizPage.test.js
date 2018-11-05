@@ -11,7 +11,8 @@ describe ('Manage Quiz Page', () => {
       correctAnswers: [],
       actions: { saveQuiz: () => { return Promise.resolve(); }},
       quiz: {id: '', question: '', category: ''},
-      match: {}
+      match: {},
+      userId: "admin"
     };
     const wrapper = mount(<ManageQuizPage {...props}/>);
     const saveButton = wrapper.find('input').last();
