@@ -1,5 +1,8 @@
 # PG6300 Quiz exam
 
+### Travis
+[![Build Status](https://travis-ci.com/stellaselena/pg6300-quiz-exam.svg?token=xqfmXCaJoqxaqpsVZGP3&branch=master)](https://travis-ci.com/stellaselena/pg6300-quiz-exam)
+
 ### Repository
 [Link to repository](https://github.com/stellaselena/PG6300-quiz-exam)
 
