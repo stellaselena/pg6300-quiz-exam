@@ -3,6 +3,7 @@ export default {
   categories: [],
   match: {
     quiz: {},
+    matchLog: []
   },
   ajaxCallsInProgress: 0,
   userId: ""

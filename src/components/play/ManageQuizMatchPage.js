@@ -28,14 +28,15 @@ class ManageQuizMatchPage extends React.Component {
     this.endMatch = this.endMatch.bind(this);
     this.checkForCorrectAnswer = this.checkForCorrectAnswer.bind(this);
     this.startTimer = this.startTimer.bind(this);
-
-    
+    this.saveMatch = this.saveMatch.bind(this);
   }
 
   static getDerivedStateFromProps(props, state) {
+
     if (props.quiz.id != state.quiz.id) {
       return props.quiz;
     }
+
     return null;
   }
 
@@ -70,6 +71,13 @@ class ManageQuizMatchPage extends React.Component {
     }, 1000);
   }
 
+  saveMatch(){
+      let match ={
+        userId: this.props.userId,
+        score: this.state.score
+      };
+      this.props.actions.saveMatch(match);
+  }
 
   getRandomQuiz(event){
     event.preventDefault();
@@ -94,6 +102,7 @@ class ManageQuizMatchPage extends React.Component {
 
   endMatch(event){
     event.preventDefault();
+    this.saveMatch();
     toastr.info("Match ended! Score " + this.state.score);
     this.props.history.push('/');
 
@@ -162,14 +171,16 @@ class ManageQuizMatchPage extends React.Component {
 ManageQuizMatchPage.propTypes = {
   actions: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  quiz: PropTypes.object.isRequired
+  quiz: PropTypes.object.isRequired,
+  userId: PropTypes.string,
+  matchLog: PropTypes.array
 };
 
 function mapStateToProps(state, ownProps){
-  debugger;
   return {
     quiz: state.match.quiz,
-    userId: state.auth.userId
+    userId: state.auth.userId,
+    match: state.match.matchLog
   };
 }
 

@@ -11,6 +11,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const auth = require('./routes/auth');
 const quiz = require('./routes/quiz');
 const category = require('./routes/category');
+const match = require('./routes/match');
 const Users = require('./db/users');
 
 /*eslint-disable no-console */
@@ -80,6 +81,7 @@ app.use(passport.session());
 app.use('/api', auth);
 app.use('/api', quiz);
 app.use('/api', category);
+app.use('/api', match);
 
 
 app.get('*', function(req, res) {

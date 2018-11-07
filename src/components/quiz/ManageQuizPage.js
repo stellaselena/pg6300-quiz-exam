@@ -99,7 +99,7 @@ export class ManageQuizPage extends React.Component {
         />
       );
     } else {
-      return <Forbidden/>
+      return <Forbidden/>;
     }
 
   }

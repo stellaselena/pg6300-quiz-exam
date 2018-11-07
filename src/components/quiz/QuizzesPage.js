@@ -33,7 +33,7 @@ class QuizzesPage extends React.Component {
         </div>
       );
     } else {
-      return <Forbidden/>
+      return <Forbidden/>;
     }
   }
 }

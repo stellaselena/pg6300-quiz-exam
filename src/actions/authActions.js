@@ -22,7 +22,6 @@ export function getAdminSuccess(userId){
 }
 
 export function getUser(){
-  debugger;
   return async function (dispatch){
     dispatch(beginAjaxCall());
     const url = "api/user";
@@ -45,7 +44,6 @@ export function getUser(){
 
 export function getRole(){
   return async function (dispatch){
-    debugger;
     dispatch(beginAjaxCall());
     const url = "api/admin";
     const response = await fetch(url, { method: "get" });

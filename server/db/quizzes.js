@@ -58,6 +58,46 @@ const quizzes =  [
         "some()"],
       correctAnswer: 1,
       category: "JavaScript"
+    },
+    {
+      id: "7",
+      question: "Java keyword used for inheritance",
+      answers: ["enlarge",
+        "extends",
+        "inherits",
+        "inheritance"],
+      correctAnswer: 1,
+      category: "Java"
+    },
+    {
+      id: "8",
+      question: "Which of the following converts a type to a signed byte type in C#",
+      answers: ["ToInt64",
+        "ToSbyte",
+        "ToSingle",
+        "ToInt32"],
+      correctAnswer: 1,
+      category: "C#"
+    },
+    {
+      id: "9",
+      question: "Which of the following operator returns the type of a class in C#",
+      answers: ["sizeOf",
+        "typeof",
+        "classType",
+        "*"],
+      correctAnswer: 1,
+      category: "C#"
+    },
+    {
+      id: "10",
+      question: "Which of the following property of Array class in C# checks whether the Array is readonly",
+      answers: ["IsFixedSize",
+        "IsReadOnly",
+        "Length",
+        "None of the above"],
+      correctAnswer: 1,
+      category: "C#"
     }
   ];
 

@@ -13,7 +13,8 @@ import '../node_modules/toastr/build/toastr.min.css';
 import { getUser, getRole } from './actions/authActions';
 import {loadQuizzes} from './actions/quizActions';
 import {loadCategories} from './actions/categoryActions';
-import {loadRandomQuiz} from './actions/matchActions';
+import {loadMatches} from './actions/matchActions';
+
 
 const store = configureStore();
 
@@ -21,6 +22,8 @@ store.dispatch(loadQuizzes());
 store.dispatch(loadCategories());
 store.dispatch(getUser());
 store.dispatch(getRole());
+store.dispatch(loadMatches());
+
 
 render(
   <Provider store={store}>

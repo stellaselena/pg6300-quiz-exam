@@ -12,6 +12,8 @@ const Header = ({loading, userId, logout}) => {
         {" | "}
         {userId === "admin" ? <NavLink to="/quizzes" activeStyle={activeStyle}>Quizzes</NavLink> :  <NavLink to="/play" activeStyle={activeStyle}>Play</NavLink> }
         {" | "}
+        <NavLink to="/highscore" activeStyle={activeStyle}>High score</NavLink>
+        {" | "}
         <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
         {" | "}
         <NavLink to="/profile" activeStyle={activeStyle}>Logged in as {userId}</NavLink>
@@ -24,6 +26,8 @@ const Header = ({loading, userId, logout}) => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <NavLink to="/"><h2>Quiz game </h2></NavLink>
         <NavLink to="/" activeStyle={activeStyle} exact>Home</NavLink>
+        {" | "}
+        <NavLink to="/highscore" activeStyle={activeStyle}>High score</NavLink>
         {" | "}
         <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
         {" | "}
