@@ -3,6 +3,9 @@
 ### Travis
 [![Build Status](https://travis-ci.com/stellaselena/pg6300-quiz-exam.svg?token=xqfmXCaJoqxaqpsVZGP3&branch=master)](https://travis-ci.com/stellaselena/pg6300-quiz-exam)
 
+### Heroku
+[Link to heroku app](https://stella-quiz-app.herokuapp.com)
+
 ### Repository
 [Link to repository](https://github.com/stellaselena/PG6300-quiz-exam)
 
