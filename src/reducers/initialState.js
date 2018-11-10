@@ -2,6 +2,7 @@ export default {
   quizzes: [],
   categories: [],
   match: {
+    initialised: false,
     quiz: {},
     matchLog: []
   },

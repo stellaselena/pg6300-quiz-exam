@@ -15,7 +15,13 @@ class ManageOnlineQuizMatchPage extends React.Component {
     super(props, context);
 
     this.state = {
-      quiz: this.props.quiz,
+      quiz: {
+        id: '',
+        question: '',
+        answers: Array(4).fill(""),
+        correctAnswer: '',
+        category: ''
+      },
       errors: {},
       redirect: false,
       loading: false,
@@ -26,7 +32,8 @@ class ManageOnlineQuizMatchPage extends React.Component {
       score: 0,
       timeLeft: 0,
       round: 0,
-      matchId: 0
+      matchId: 0,
+      initialised: false
     };
 
     this.getRandomQuiz = this.getRandomQuiz.bind(this);
@@ -38,19 +45,10 @@ class ManageOnlineQuizMatchPage extends React.Component {
     this.opponent = new PlayerOnline();
     this.startMatch = this.startMatch.bind(this);
 
-
-  }
-
-  static getDerivedStateFromProps(props, state) {
-
-    if (props.quiz.id != state.quiz.id) {
-      return props.quiz;
-    }
-
-    return null;
   }
 
   componentDidMount(){
+    debugger;
     let errors = {};
     const userId = this.props.userId;
 
@@ -65,8 +63,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
     if (this.state.matchId === 0) {
       let quiz = Object.assign({}, this.state.quiz);
       quiz.question = "Waiting for other players to join";
-      quiz.correctAnswer = 0;
-      quiz.answers = Array(4);
 
       this.setState({
         quiz: quiz,
@@ -80,6 +76,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
       this.setState({errorMsg: "Disconnected from Server."});
     });
 
+    //login with websocket
     this.props.actions.websocketLogin(this.socket).then(response => {
       debugger;
       let errors = {};
@@ -93,55 +90,22 @@ class ManageOnlineQuizMatchPage extends React.Component {
         this.setState({errors: errors});
         return;
       }
-      this.socket.emit('begin');
 
-      this.socket.on('question', function(data){
-        alert(data);
+      //initialise match
+      this.props.actions.startMatch().then(() => {
+      this.setState({
+        initialised: this.props.initialised
       });
 
-    });
-  }
+      });
+  })};
 
 
   componentWillUnmount() {
-    if(this.socket){
-      this.socket.disconnect();
-    }
-    clearInterval(this.interval);
+    this.socket.disconnect();
   }
 
   startMatch(){
-    // this.setState({
-    //   matchId: null,
-    //   opponentId: null,
-    //   errorMsg: null
-    // });
-    //
-    // const url = "/api/matches";
-    //
-    // let response;
-    //
-    // try {
-    //   response = await fetch(url, {
-    //     method: "post"
-    //   });
-    // } catch (err) {
-    //   this.setState({errorMsg: "Failed to connect to server: " + err});
-    //   return;
-    // }
-    //
-    //
-    // if (response.status === 401) {
-    //   //this could happen if the session has expired
-    //   this.setState({errorMsg: "You should log in first"});
-    //   this.props.updateLoggedInUserId(null);
-    //   return;
-    // }
-    //
-    // if (response.status !== 201 && response.status !== 204) {
-    //   this.setState({errorMsg: "Error when connecting to server: status code " + response.status});
-    //   return;
-    // }
   }
 
   startTimer(){
@@ -228,40 +192,41 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
 
-  render() {
+  render(){
 
-    if (!this.props.userId){
-      return <div className="container text-center"><h1>You have to login or register first in order to play!</h1></div>;
-    }
+  if (!this.props.userId) {
+    return <div className="container text-center"><h1>You have to login or register first in order to play!</h1></div>;
+  }
 
-    if (this.state.errors.length > 0) {
-      <div><h2>Error</h2></div>
-      {this.state.errors.map(error => {
+  if (this.state.errors.length > 0) {
+    <div><h2>Error</h2></div>
+    {
+      this.state.errors.map(error => {
         return (
           <div><h2>{error.valueOf()}</h2></div>
         );
-      })}
+      })
     }
-
-    return (
-      <div>
-        <OnlineQuizMatchPage
-          question={this.state.quiz.question}
-          answers={this.state.quiz.answers}
-          correctAnswer={this.state.quiz.correctAnswer}
-          onNext={this.state.round === 10 ? this.endMatch : this.startMatch}
-          onAnswer={this.checkForCorrectAnswer}
-          answerCorrect={this.state.answerSelected}
-          answerDisabled={this.state.loading}
-          buttonDisabled={this.state.matchId === 0}
-          score={this.state.score}
-          timeLeft={this.state.timeLeft}
-          round={this.state.round}
-        />
-      </div>
-
-    );
   }
+
+  return (
+    <div>
+      <OnlineQuizMatchPage
+        question={this.state.quiz.question}
+        answers={this.state.quiz.answers}
+        correctAnswer={this.state.quiz.correctAnswer}
+        onNext={this.state.round === 10 ? this.endMatch : this.startMatch}
+        onAnswer={this.checkForCorrectAnswer}
+        answerCorrect={this.state.answerSelected}
+        answerDisabled={this.state.loading}
+        buttonDisabled={this.state.matchId === 0}
+        score={this.state.score}
+        timeLeft={this.state.timeLeft}
+        round={this.state.round}
+      />
+    </div>
+
+  )}
 }
 
 ManageOnlineQuizMatchPage.propTypes = {
@@ -273,10 +238,18 @@ ManageOnlineQuizMatchPage.propTypes = {
 };
 
 function mapStateToProps(state, ownProps){
+  let quiz;
+  if(state.match.quiz){
+    quiz = state.match.quiz;
+  } else {
+    quiz = {id: '', question: '', answers: Array(4).fill(""), correctAnswer: '', category: ''};
+  }
   return {
-    quiz: state.match.quiz,
+    quiz: quiz,
     userId: state.auth.userId,
-    match: state.match.matchLog
+    match: state.match,
+    initialised: state.match.initialised
+
   };
 }
 

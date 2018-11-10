@@ -21,7 +21,7 @@ function hasUser(id){
 }
 
 function takeUser(){
-
+  console.log("taking user from queue " + queue);
   if(queue.length === 0){
     return null;
   }
