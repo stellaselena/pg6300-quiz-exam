@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const OnlineQuizMatchPage = ({question, answers, onNext, onAnswer, answerCorrect, answerDisabled, buttonDisabled, score, timeLeft, round}) => {
+const OnlineQuizMatchPage = ({question, answers, onAnswer, answerCorrect, answerDisabled, buttonDisabled, score, timeLeft, round, onStart}) => {
 
   const background = (id) => {
     let color;
@@ -68,7 +68,7 @@ const OnlineQuizMatchPage = ({question, answers, onNext, onAnswer, answerCorrect
       </div>
       <div className="row">
         <div className="col-md-12">
-          <button className={buttonColor(round)} onClick={onNext} disabled={buttonDisabled}><h4>{round === 10 ? "Leave" : "Begin match"}</h4></button>
+          <button className={buttonColor(round)} onClick={onStart} disabled={buttonDisabled}><h4>{round === 10 ? "Leave" : "Begin match"}</h4></button>
         </div>
       </div>
     </div>
@@ -77,18 +77,16 @@ const OnlineQuizMatchPage = ({question, answers, onNext, onAnswer, answerCorrect
 };
 
 OnlineQuizMatchPage.propTypes = {
-  // question: PropTypes.string.isRequired,
-  // answers: PropTypes.array.isRequired,
-  // onNext: PropTypes.func.isRequired,
-  // onAnswer: PropTypes.func.isRequired,
-  // answerCorrect: PropTypes.object.isRequired,
-  // buttonDisabled: PropTypes.bool.isRequired,
-  // answerDisabled: PropTypes.bool.isRequired,
-  // score: PropTypes.number.isRequired,
-  // timeLeft: PropTypes.number.isRequired,
-  // round: PropTypes.number.isRequired,
-
-
+  question: PropTypes.string.isRequired,
+  answers: PropTypes.array.isRequired,
+  onStart: PropTypes.func.isRequired,
+  onAnswer: PropTypes.func.isRequired,
+  answerCorrect: PropTypes.object.isRequired,
+  buttonDisabled: PropTypes.bool.isRequired,
+  answerDisabled: PropTypes.bool.isRequired,
+  score: PropTypes.number.isRequired,
+  timeLeft: PropTypes.number.isRequired,
+  round: PropTypes.number.isRequired,
 
 };
 
