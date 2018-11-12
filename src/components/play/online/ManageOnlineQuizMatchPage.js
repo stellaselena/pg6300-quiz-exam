@@ -147,6 +147,10 @@ class ManageOnlineQuizMatchPage extends React.Component {
     });
 
     this.socket.on('matchResult', (dto) => {
+
+
+
+
       let errors = {};
       if (dto === null || dto === undefined) {
         errors.serverError = "Invalid response from server";
@@ -174,17 +178,20 @@ class ManageOnlineQuizMatchPage extends React.Component {
         quiz: quiz,
         answerSelected,
         loading: true,
+        timeLeft: 0
       });
       debugger;
       if(data.status.indexOf("won") !== -1){
         toastr.success("You won with a score of " + this.state.score);
+      } else if(data.status.indexOf("terminated") !== -1){
+        toastr.warning(data.status);
       } else {
         toastr.warning("You lost with a score of " + this.state.score);
       }
       setTimeout(() => {
         this.props.history.push("/");
 
-      },2000);
+      },5000);
 
     });
 

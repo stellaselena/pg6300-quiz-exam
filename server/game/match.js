@@ -23,6 +23,8 @@ class Match{
     this.firstUser = firstPlayerId;
 
     this.callbackWhenFinished = callbackWhenFinished;
+
+    this.nextRoundInterval = 0;
   }
 
 
@@ -96,12 +98,12 @@ class Match{
 
       let round = data.round;
 
-      let nextRoundInterval = setInterval(() => {
+       this.nextRoundInterval = setInterval(() => {
         round++;
         this.quiz.nextRound(round);
 
         if(round >= 10){
-          clearInterval(nextRoundInterval);
+          clearInterval(this.nextRoundInterval);
           this.score.getHighestScore(this.playerIds);
 
           this.sendFinishedState(this.playerIds[0]);
@@ -180,9 +182,19 @@ class Match{
   }
 
   sendForfeit(userId){
+    let status = userId + " has left the game. Match terminated.";
 
-    this.quiz.doForfeit();
-    this.sendState(this.opponentId(userId));
+    const payload = {
+      data: {
+        matchId: this.matchId,
+        status: status,
+        opponentId: this.opponentId(userId)
+      }
+    };
+    clearInterval(this.nextRoundInterval);
+    const socket = this.sockets.get(this.opponentId(userId));
+    socket.emit('matchResult', payload);
+
   }
 
 }

@@ -27,10 +27,6 @@ class QuizState {
     return this.round > 10;
   }
 
-  doForfeit(){
-    this.round = 11;
-  }
-
   nextRound(round){
     this.round = round + 1;
     this.quiz =  Quizzes.getRandomQuiz();
