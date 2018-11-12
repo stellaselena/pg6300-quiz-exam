@@ -55,7 +55,19 @@ class ScoreState {
         this.winner = player;
       }
     });
+  }
 
+  answeredForRound(players, round){
+    let answers = 0;
+    players.forEach(player => {
+      this.matchScore.map(el => {
+        if(el.userId === player && el.round === round){
+          answers += 1;
+        }
+      });
+    });
+
+    return answers;
   }
 
 }

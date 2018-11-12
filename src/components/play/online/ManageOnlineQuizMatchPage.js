@@ -93,14 +93,12 @@ class ManageOnlineQuizMatchPage extends React.Component {
       const data = dto.data;
 
       let quiz = Object.assign({}, this.state.quiz);
-      quiz.question = "Match is now available";
+      debugger;
+      quiz.question =  data.isFirstPlayer ? "Match available. Press Begin Match to start!" : "Match will start soon.";
 
       this.setState({
         quiz: quiz,
-        loading: true
-      });
-
-      this.setState({
+        loading: true,
         matchId: data.matchId,
         opponentId: data.opponentId,
         isFirstPlayer: data.isFirstPlayer
@@ -298,7 +296,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
           onAnswer={this.checkForCorrectAnswer}
           answerCorrect={this.state.answerSelected}
           answerDisabled={this.state.loading}
-          buttonDisabled={!this.state.isFirstPlayer || this.state.initialised}
+          buttonHidden={!this.state.isFirstPlayer || this.state.initialised}
           onStart={this.startMatch}
           score={this.state.score}
           timeLeft={this.state.timeLeft}

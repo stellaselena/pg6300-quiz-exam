@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const OnlineQuizMatchPage = ({question, answers, onAnswer, answerCorrect, answerDisabled, buttonDisabled, score, timeLeft, round, onStart}) => {
+const OnlineQuizMatchPage = ({question, answers, onAnswer, answerCorrect, answerDisabled, buttonHidden, score, timeLeft, round, onStart}) => {
 
   const background = (id) => {
     let color;
@@ -57,7 +57,7 @@ const OnlineQuizMatchPage = ({question, answers, onAnswer, answerCorrect, answer
       </div>
       <div className="row">
         <div className="col-md-12">
-          <button className="btn btn-primary btn-md btn-randomQuiz" onClick={onStart} disabled={buttonDisabled}><h4>{round === 10 ? "Leave" : "Begin match"}</h4></button>
+          <button className="btn btn-primary btn-md btn-randomQuiz" onClick={onStart} hidden={buttonHidden}><h4>Begin match</h4></button>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@ OnlineQuizMatchPage.propTypes = {
   onStart: PropTypes.func.isRequired,
   onAnswer: PropTypes.func.isRequired,
   answerCorrect: PropTypes.object.isRequired,
-  buttonDisabled: PropTypes.bool.isRequired,
+  buttonHidden: PropTypes.bool.isRequired,
   answerDisabled: PropTypes.bool.isRequired,
   score: PropTypes.number.isRequired,
   timeLeft: PropTypes.number.isRequired,

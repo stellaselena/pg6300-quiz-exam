@@ -51,8 +51,8 @@ router.post('/matches', (req, res) => {
     if (!ActivePlayers.isActive(opponent)) {
       continue;
     }
-
-    OngoingMatches.startMatch(req.user.id, opponent);
+    const playerIds =[req.user.id, opponent];
+    OngoingMatches.startMatch(playerIds);
 
     res.status(201).send();
     return;

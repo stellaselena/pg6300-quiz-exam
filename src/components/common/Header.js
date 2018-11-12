@@ -15,8 +15,6 @@ const Header = ({loading, userId, logout}) => {
         {" | "}
         <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
         {" | "}
-        <NavLink to="" activeStyle={activeStyle}>Logged in as {userId}</NavLink>
-        {" | "}
         <NavLink to="" onClick={logout} activeStyle={activeStyle}>Logout</NavLink>
       </nav>
     );

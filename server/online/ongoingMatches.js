@@ -4,14 +4,12 @@ const Match = require('../game/match');
 const userIdToMatch = new Map();
 const matchIdToMatch = new Map();
 
-function startMatch(firstId, secondId){
+function startMatch(playerIds){
 
-  const match = new Match(firstId, secondId, deleteMatch);
+  const match = new Match(playerIds, deleteMatch);
 
-  console.log("Starting a new match: '"+firstId+"' vs. '"+secondId+"', id = " + match.matchId);
-
-  userIdToMatch.set(firstId, match);
-  userIdToMatch.set(secondId, match);
+  console.log("Starting a new match:" +  match.matchId);
+  playerIds.forEach(p => userIdToMatch.set(p, match));
   matchIdToMatch.set(match.matchId, match);
 
   match.start();
