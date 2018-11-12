@@ -5,6 +5,10 @@ export function loginSuccess(userId) {
   return {type: types.LOGIN_SUCCESS, userId};
 }
 
+export function websocketLoginSuccess(loggedIn) {
+  return {type: types.WEBSOCKET_LOGIN_SUCCESS, loggedIn};
+}
+
 export function signUpSuccess(userId) {
   return {type: types.SIGN_UP_SUCCESS, userId};
 }
@@ -84,6 +88,31 @@ export function login(userId, password){
     });
 
   };
+}
+
+export function websocketLogin(socket){
+  return async function (dispatch){
+    dispatch(beginAjaxCall());
+    const url = "/api/wstoken";
+    return fetch(url, {
+      method: "post"
+    }).then(async response => {
+      if (response.status === 401) {
+        dispatch(ajaxCallError("Not logged in"));
+        return 401;
+      } else if(response.status !== 201) {
+        dispatch(ajaxCallError("Error when connecting to server. Status code " + response.status));
+        return 500;
+      } else {
+        const payload = await response.json();
+        socket.emit('login', payload);
+        dispatch(websocketLoginSuccess(true));
+        return 201;
+      }
+    });
+
+  };
+
 }
 
 export function signUp(userId, password){

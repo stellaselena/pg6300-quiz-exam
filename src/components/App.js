@@ -14,7 +14,7 @@ import toastr from 'toastr';
 import {bindActionCreators} from 'redux';
 import * as authActions from "../actions/authActions";
 import ManageQuizMatchPage from './play/ManageQuizMatchPage';
-import HighScore from "./highscore/HighScore"; //eslint-disable-line import/no-named-as-default
+import ManageOnlineQuizMatchPage from './play/online/ManageOnlineQuizMatchPage';
 
 
 class App extends React.Component {
@@ -51,12 +51,12 @@ class App extends React.Component {
         <Route exact path="/" component={HomePage}/>
         <Route path="/login" component={Login}/>
         <Route path="/signup" component={Signup}/>
-        <Route path="/play" component={ManageQuizMatchPage}/>
+        <Route path="/play_singleplayer" component={ManageQuizMatchPage}/>
+        <Route path="/play_online" component={ManageOnlineQuizMatchPage}/>
         <Route path="/quizzes" component={QuizzesPage}/>
         <Route path="/quiz/:id" component={ManageQuizPage}/>
         <Route path="/quiz" component={ManageQuizPage} exact />
         <Route path="/about" component={AboutPage}/>
-        <Route path="/highscore" component={HighScore}/>
         <Route component={NotFound}/>
       </Switch>
 

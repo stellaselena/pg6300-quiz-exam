@@ -6,8 +6,7 @@ class HomePage extends React.Component {
     return (
       <div className="jumbotron container">
         <h1>Find ongoing matches</h1>
-        <p><Link to="play">Play</Link> quizzes with other players!</p>
-        Not registered? <Link to="signup"> Click here</Link>
+        <p><Link to="play_online">Play</Link> quizzes with other players or <Link to="play_singleplayer">play</Link> alone!</p>
       </div>
     );
   }

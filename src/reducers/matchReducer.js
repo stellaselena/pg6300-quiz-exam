@@ -29,6 +29,12 @@ export default function quizzes(state = initialState.match, action) {
           quiz:action.quiz
       };
 
+    case types.START_MATCH_SUCCESS:
+      return {
+        ...state,
+        initialised:action.success
+      };
+
     default:
       return state;
   }

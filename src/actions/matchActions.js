@@ -17,6 +17,29 @@ export function loadMatchesSuccess(matches) {
   return {type: types.LOAD_MATCHES_SUCCESS, matches};
 }
 
+export function startMatchSuccess(success) {
+  return {type: types.START_MATCH_SUCCESS, success};
+}
+
+export function startMatch(){
+  return async function (dispatch) {
+    dispatch(beginAjaxCall());
+    const url = "api/matches";
+    await fetch(url, {
+      method: "post"
+    }).then(response => {
+      if (response.status === 201 || response.status === 204) {
+        dispatch(startMatchSuccess(true));
+      } else if(response.status === 401) {
+        dispatch(ajaxCallError("You should login first"));
+      } else {
+        dispatch(ajaxCallError("Error when connecting to server"));
+      }
+    });
+  };
+}
+
+
 export function loadRandomQuiz() {
   return async function (dispatch) {
     dispatch(beginAjaxCall());

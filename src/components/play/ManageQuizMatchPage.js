@@ -104,7 +104,7 @@ class ManageQuizMatchPage extends React.Component {
     event.preventDefault();
     this.saveMatch();
     toastr.info("Match ended! Score " + this.state.score);
-    this.props.history.push('/');
+    this.props.history.push('/quiz');
 
   }
 

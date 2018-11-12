@@ -1,6 +1,7 @@
 const socketIo = require('socket.io');
 const Tokens = require('./tokens');
-
+const PlayersOnline = require('../online/playersOnline');
+const OngoingMatches = require('../online/ongoingMatches');
 
 /*eslint-disable no-console*/
 let io;
@@ -29,12 +30,15 @@ const start = (server) => {
                 return;
             }
 
-            console.log("User '"+userId+"' is now connected with a websocket.");
+          PlayersOnline.registerSocket(socket, userId);
+
+          console.log("User '"+userId+"' is now connected with a websocket.");
         });
 
         socket.on('disconnect',  () => {
-
-            console.log("User is disconnected.");
+          const userId = PlayersOnline.getUser(socket.id);
+          OngoingMatches.forfeit(userId);
+          console.log("User '"+userId+"' is disconnected.");
         });
     });
 };
