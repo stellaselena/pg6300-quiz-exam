@@ -68,21 +68,26 @@ class Match {
       this.score.addUserScore(data.userId, data.round, data.answerSelected.score);
 
       const answersForRound = this.score.answeredForRound(this.playerIds, this.quiz.round);
+
       const expectedAnswers = this.playerIds.length;
 
       if (answersForRound === expectedAnswers) {
         clearInterval(this.nextRoundInterval);
+        if(this.quiz.round < 10){
+          setTimeout(() => {
+            this.quiz.nextRound(this.quiz.round);
 
-        setTimeout(() => {
-          console.log("sendind q for round " + this.quiz.round);
+            this.playerIds.forEach(p => this.sendState(p));
 
-          this.quiz.nextRound(this.quiz.round);
+            this.sendQuestion();
 
-          this.playerIds.forEach(p => this.sendState(p));
+          }, 1000);
+        } else {
+          clearInterval(this.nextRoundInterval);
+          this.score.getHighestScore(this.playerIds);
 
-          this.sendQuestion();
-        }, 1000);
-
+          this.playerIds.forEach(p => this.sendFinishedState(p));
+        }
       }
     });
 
@@ -190,14 +195,13 @@ class Match {
     let round = this.quiz.round;
 
     this.nextRoundInterval = setInterval(() => {
-      this.quiz.nextRound(round);
-
       if (round >= 10) {
         clearInterval(this.nextRoundInterval);
         this.score.getHighestScore(this.playerIds);
 
         this.playerIds.forEach(p => this.sendFinishedState(p));
       } else {
+        this.quiz.nextRound(round);
         this.playerIds.forEach(p => this.sendState(p));
         round++;
 

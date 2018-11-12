@@ -46,24 +46,24 @@ const QuizMatchPage = ({question, answers, onNext, onAnswer, answerCorrect, disa
       <div className="row">
       <div className="col-md-2"/>
       <div className="col-md-8">
-          <div className="jumbotron jumbotron-question bg-dark text-white"><h2>{question}</h2></div>
+          <div className="jumbotron jumbotron-question bg-dark text-white"><h3>{question}</h3></div>
         </div>
         <div className="col-md-2"/>
       </div>
       <div className="row">
         <div className="col-md-6">
-          <button className={background(0)} disabled={disabled} onClick={onAnswer}><h5>{answers[0]}</h5></button>
+          <button className={background(0)} disabled={disabled} onClick={onAnswer}><h6>{answers[0]}</h6></button>
         </div>
         <div className="col-md-6">
-          <button className={background(1)} disabled={disabled}  onClick={onAnswer}><h5>{answers[1]}</h5></button>
+          <button className={background(1)} disabled={disabled}  onClick={onAnswer}><h6>{answers[1]}</h6></button>
         </div>
       </div>
       <div className="row">
         <div className="col-md-6">
-          <button className={background(2)} disabled={disabled} onClick={onAnswer}><h5>{answers[2]}</h5></button>
+          <button className={background(2)} disabled={disabled} onClick={onAnswer}><h6>{answers[2]}</h6></button>
         </div>
         <div className="col-md-6">
-          <button className={background(3)} disabled={disabled} onClick={onAnswer}><h5>{answers[3]}</h5></button>
+          <button className={background(3)} disabled={disabled} onClick={onAnswer}><h6>{answers[3]}</h6></button>
         </div>
       </div>
       <div className="row">
