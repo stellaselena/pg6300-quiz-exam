@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Match = require('../game/match');
 
 const userIdToMatch = new Map();

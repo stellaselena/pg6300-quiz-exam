@@ -10,19 +10,13 @@ export  class PlayerOnline{
         this.matchId = matchId;
     }
 
-    playNext(answer, currentQuiz){
+    sendAnswer(userId, matchId, round, answerSelected){
+      this.socket.emit('answer', {
+        userId: userId,
+        matchId: matchId,
+        round: round,
+        answerSelected: answerSelected
+      });
 
-        if(answer === null || answer=== undefined){
-            return;
-        }
-
-        const quizState = currentQuiz.getState();
-
-        this.socket.emit('answer', {
-            round: quizState.round,
-            answer: answer,
-            matchId: this.matchId
-        });
     }
-
 }

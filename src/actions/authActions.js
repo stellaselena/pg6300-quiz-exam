@@ -92,13 +92,11 @@ export function login(userId, password){
 
 export function websocketLogin(socket){
   return async function (dispatch){
-    debugger;
     dispatch(beginAjaxCall());
     const url = "/api/wstoken";
     return fetch(url, {
       method: "post"
     }).then(async response => {
-      debugger;
       if (response.status === 401) {
         dispatch(ajaxCallError("Not logged in"));
         return 401;
@@ -107,7 +105,6 @@ export function websocketLogin(socket){
         return 500;
       } else {
         const payload = await response.json();
-        debugger;
         socket.emit('login', payload);
         dispatch(websocketLoginSuccess(true));
         return 201;
@@ -116,7 +113,7 @@ export function websocketLogin(socket){
 
   };
 
-};
+}
 
 export function signUp(userId, password){
   return function (dispatch){

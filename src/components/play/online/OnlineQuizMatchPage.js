@@ -18,17 +18,6 @@ const OnlineQuizMatchPage = ({question, answers, onAnswer, answerCorrect, answer
     return color;
   };
 
-  const buttonColor = (round) => {
-    let color;
-    if(round === 10){
-      color = "btn btn-danger btn-md btn-randomQuiz";
-    } else {
-      color = "btn btn-primary btn-md btn-randomQuiz";
-    }
-
-    return color;
-  };
-
   return (
     <div className="container text-center">
       <div className="row">
@@ -68,7 +57,7 @@ const OnlineQuizMatchPage = ({question, answers, onAnswer, answerCorrect, answer
       </div>
       <div className="row">
         <div className="col-md-12">
-          <button className={buttonColor(round)} onClick={onStart} disabled={buttonDisabled}><h4>{round === 10 ? "Leave" : "Begin match"}</h4></button>
+          <button className="btn btn-primary btn-md btn-randomQuiz" onClick={onStart} disabled={buttonDisabled}><h4>{round === 10 ? "Leave" : "Begin match"}</h4></button>
         </div>
       </div>
     </div>

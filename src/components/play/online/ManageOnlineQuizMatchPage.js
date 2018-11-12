@@ -32,7 +32,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
         score: 0,
       },
       score: 0,
-      timeLeft: 15,
+      timeLeft: 10,
       round: 0,
       matchId: null,
       initialised: false,
@@ -41,17 +41,14 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
     };
 
-    this.endMatch = this.endMatch.bind(this);
     this.checkForCorrectAnswer = this.checkForCorrectAnswer.bind(this);
     this.startTimer = this.startTimer.bind(this);
-
-    this.opponent = new PlayerOnline();
     this.startMatch = this.startMatch.bind(this);
+    this.opponent = new PlayerOnline();
 
   }
 
   componentDidMount() {
-    debugger;
     let errors = {};
     const userId = this.props.userId;
 
@@ -76,32 +73,11 @@ class ManageOnlineQuizMatchPage extends React.Component {
     this.socket.on('disconnect', () => {
       let errors = {};
       errors.disconnected = "Disconnected from Server";
-      this.setState({})
       this.setState({errors: errors});
-    });
-
-    this.props.actions.websocketLogin(this.socket).then(response => {
-      debugger;
-      let errors = {};
-      if (response === 401) {
-        errors.websocketError = "You should log in first";
-        this.setState({errors: errors});
-        return;
-      } else if (response !== 201) {
-        errors.websocketError = "Error when connecting to server";
-        this.setState({errors: errors});
-        return;
-      } else {
-        this.props.actions.startMatch().then(() => {
-          console.log("match initialised");
-
-        });
-      }
     });
 
     this.socket.on("matchAvailable", (dto) => {
       let errors = {};
-      debugger;
       errors.serverError = "Invalid response from server";
       if (dto === null || dto === undefined) {
         this.setState({errors: errors});
@@ -136,19 +112,10 @@ class ManageOnlineQuizMatchPage extends React.Component {
     });
 
     this.socket.on('question', (dto) => {
-      debugger;
-      this.socket.emit('answer', {
-        userId: this.props.userId,
-        matchId: this.state.matchId,
-        round: this.state.round,
-        answerSelected: this.state.answerSelected
-      });
-
-      debugger;
       let errors = {};
       clearInterval(this.interval);
       if (dto === null || dto === undefined) {
-        errors.serverError ="Invalid response from server";
+        errors.serverError = "Invalid response from server";
         this.setState({errors: errors});
         return;
       }
@@ -171,15 +138,74 @@ class ManageOnlineQuizMatchPage extends React.Component {
         quiz: quiz,
         loading: false,
         answerSelected,
-        timeLeft: 15,
+        timeLeft: 10,
         round: data.quizDto.round
       });
 
       this.startTimer();
 
     });
-  }
 
+    this.socket.on('matchResult', (dto) => {
+      let errors = {};
+      if (dto === null || dto === undefined) {
+        errors.serverError = "Invalid response from server";
+        this.setState({errors: errors});
+        return;
+      }
+
+      if (dto.error !== null && dto.error !== undefined) {
+        errors.dtoError = dto.error;
+        this.setState({errors: errors});
+        return;
+      }
+
+      const data = dto.data;
+      let quiz = Object.assign({}, this.state.quiz);
+      quiz.answers = Array(4).fill("");
+      quiz.question = data.status;
+
+      let answerSelected = Object.assign({}, this.state.answerSelected);
+      answerSelected.id = "";
+      answerSelected.correct = false;
+      answerSelected.score = 0;
+
+      this.setState({
+        quiz: quiz,
+        answerSelected,
+        loading: true,
+      });
+      debugger;
+      if(data.status.indexOf("won") !== -1){
+        toastr.success("You won with a score of " + this.state.score);
+      } else {
+        toastr.warning("You lost with a score of " + this.state.score);
+      }
+      setTimeout(() => {
+        this.props.history.push("/");
+
+      },2000);
+
+    });
+
+    this.props.actions.websocketLogin(this.socket).then(response => {
+      let errors = {};
+      if (response === 401) {
+        errors.websocketError = "You should log in first";
+        this.setState({errors: errors});
+        return;
+      } else if (response !== 201) {
+        errors.websocketError = "Error when connecting to server";
+        this.setState({errors: errors});
+        return;
+      } else {
+        this.props.actions.startMatch();
+      }
+    });
+
+    this.opponent.setSocket(this.socket);
+
+  }
 
   componentWillUnmount() {
     this.socket.disconnect();
@@ -188,7 +214,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
   startMatch() {
-    debugger;
     this.socket.emit('matchRequest', {
       userId: this.props.userId,
       matchId: this.state.matchId,
@@ -207,24 +232,17 @@ class ManageOnlineQuizMatchPage extends React.Component {
     }, 1000);
   }
 
-  endMatch(event) {
-    event.preventDefault();
-    toastr.info("Match ended! Score " + this.state.score);
-    this.props.history.push('/');
-
-  }
-
   checkForCorrectAnswer(event) {
-    debugger;
     event.preventDefault();
-    const currentScore = this.state.timeLeft;
-    let totalScore = answer === correctAnswer ? this.state.score + this.state.timeLeft : this.state.score;
-
     clearInterval(this.interval);
 
     const answer = event.target.textContent;
     const answerIndex = this.state.quiz.answers.indexOf(answer);
     const correctAnswer = this.state.quiz.answers[this.state.quiz.correctAnswer];
+
+    let totalScore = answer === correctAnswer ? this.state.score + this.state.timeLeft : this.state.score;
+    const currentScore = answer === correctAnswer ? this.state.timeLeft : 0;
+
 
     let answerSelected = Object.assign({}, this.state.answerSelected);
     answerSelected.id = answerIndex;
@@ -235,28 +253,30 @@ class ManageOnlineQuizMatchPage extends React.Component {
     answer === correctAnswer ? toastr.success('Correct!')
       : toastr.warning('Wrong answer!');
 
-
     this.setState({
       loading: true,
       answerSelected,
       score: totalScore
     });
 
+    this.opponent.sendAnswer(this.props.userId, this.state.matchId, this.state.round, answerSelected);
+
   }
 
   render() {
 
     if (!this.props.userId) {
-      return <div className="container text-center"><h1>You have to login or register first in order to play!</h1>
-      </div>;
+      return (
+        <div className="container text-center"><h1>You have to login or register first in order to play!</h1>
+        </div>
+      );
     }
 
     if (this.state.errors.length > 0) {
-      <div><h2>Error</h2></div>;
       {
-        this.state.errors.map(error => {
+        this.state.errors.map((error, i) => {
           return (
-            <div><h2>{error.valueOf()}</h2></div>
+            <div key={i}><h2>{error.valueOf()}</h2></div>
           );
         });
       }
@@ -272,7 +292,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
           answerCorrect={this.state.answerSelected}
           answerDisabled={this.state.loading}
           buttonDisabled={!this.state.isFirstPlayer || this.state.initialised}
-          onStart={this.state.round === 10 ? this.endMatch : this.startMatch}
+          onStart={this.startMatch}
           score={this.state.score}
           timeLeft={this.state.timeLeft}
           round={this.state.round}
@@ -288,7 +308,8 @@ ManageOnlineQuizMatchPage.propTypes = {
   history: PropTypes.object.isRequired,
   quiz: PropTypes.object.isRequired,
   userId: PropTypes.string,
-  matchLog: PropTypes.array
+  matchLog: PropTypes.array,
+  initialised: PropTypes.bool,
 };
 
 function mapStateToProps(state, ownProps) {

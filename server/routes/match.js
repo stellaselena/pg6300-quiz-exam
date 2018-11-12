@@ -40,7 +40,6 @@ router.post('/matches', (req, res) => {
   }
 
   if(PlayerQueue.hasUser(req.user.id)){
-    console.log("user already in queue");
     res.status(204).send();
     return;
   }
@@ -48,14 +47,10 @@ router.post('/matches', (req, res) => {
   OngoingMatches.forfeit(req.user.id);
 
   while (PlayerQueue.size() > 0) {
-    console.log("fetching user from queue");
-
     const opponent = PlayerQueue.takeUser();
     if (!ActivePlayers.isActive(opponent)) {
-      console.log("not active");
       continue;
     }
-    console.log("starting match");
 
     OngoingMatches.startMatch(req.user.id, opponent);
 
@@ -63,7 +58,6 @@ router.post('/matches', (req, res) => {
     return;
   }
 
-  console.log("adding user to queue");
   PlayerQueue.addUser(req.user.id);
   res.status(201).send();
 

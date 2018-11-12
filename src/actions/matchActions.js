@@ -24,12 +24,10 @@ export function startMatchSuccess(success) {
 export function startMatch(){
   return async function (dispatch) {
     dispatch(beginAjaxCall());
-    debugger;
     const url = "api/matches";
     await fetch(url, {
       method: "post"
     }).then(response => {
-      debugger;
       if (response.status === 201 || response.status === 204) {
         dispatch(startMatchSuccess(true));
       } else if(response.status === 401) {

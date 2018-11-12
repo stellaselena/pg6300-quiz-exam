@@ -1,7 +1,8 @@
-const socketIo = require('socket.io');
+/* eslint-disable no-console */
 const crypto = require("crypto");
 
 const QuizState = require('./quizState');
+const ScoreState = require('./scoreState');
 const ActivePlayers = require('../online/playersOnline');
 
 class Match{
@@ -9,6 +10,7 @@ class Match{
   constructor(firstPlayerId, secondPlayerId, callbackWhenFinished){
 
     this.quiz = new QuizState();
+    this.score = new ScoreState();
 
     this.playerIds = [firstPlayerId, secondPlayerId];
 
@@ -39,58 +41,38 @@ class Match{
   }
 
   registerListener(userId){
-    console.log("registering listener");
     const socket = this.sockets.get(userId);
 
     socket.on('answer', data => {
-
-      console.log("answer received");
-
-      // this.socket.on('question', (dto) => {
-      //   this.socket.emit('answer', {
-      //     userId: this.props.userId,
-      //     matchId: this.state.matchId,
-      //     round: this.state.round,
-      //     answerSelected: this.state.answerSelected
-      //   });
+      console.log("Handling answer from '" + data.userId+"' for round " + data.round
+        + " in match " + this.matchId);
 
       if (data === null || data === undefined) {
-        socket.emit("question", {error: "No payload provided"});
+        socket.emit("update", {error: "No payload provided"});
         return;
       }
       if(data.userId === undefined || data.userId === null){
-        socket.emit("question", {error: "No userId provided"});
+        socket.emit("update", {error: "No userId provided"});
       }
 
       if(data.matchId !== this.matchId){
         console.log("Invalid matchId: "+data.matchId+" !== " + this.matchId);
         return;
       }
-
-      console.log(data.answerSelected);
-      console.log(this.quiz.extractDto());
-
-      console.log("Handling message from '" + data.userId+"' for round " + data.round
-        + " in match " + this.matchId);
-
-      const expectedRound = this.quiz.round;
-      const quiz = this.quiz.quiz;
-      console.log("quiz" + quiz);
-
-      if(data.round !== expectedRound){
+      if(data.round !== this.quiz.round){
         socket.emit("update", {error: "Invalid operation"});
-        console.log("Invalid round: "+data.round+" !== " + expectedRound);
+        console.log("Invalid round: "+data.round+" !== " + this.quiz.round);
         return;
       }
-      //update the state of the game
-      //todo create map for users answer score
 
-      // this.sendState(this.opponentId(userId));
+      this.score.addUserScore(data.userId, data.round, data.answerSelected.score);
+
+      let total = this.score.getTotalScore(data.userId);
+      console.log(total);
 
     });
 
     socket.on('matchRequest', data => {
-      console.log("matchRequest entered");
       if (data === null || data === undefined) {
         socket.emit("question", {error: "No payload provided"});
         return;
@@ -120,12 +102,17 @@ class Match{
 
         if(round >= 10){
           clearInterval(nextRoundInterval);
+          this.score.getHighestScore(this.playerIds);
+
+          this.sendFinishedState(this.playerIds[0]);
+          this.sendFinishedState(this.playerIds[1]);
+
         } else {
           this.sendState(this.playerIds[0]);
           this.sendState(this.playerIds[1]);
         }
 
-      }, 15000);
+      }, 1000);
 
       if(this.quiz.isGameFinished()){
         this.callbackWhenFinished(this.matchId);
@@ -133,7 +120,6 @@ class Match{
 
     });
   }
-
 
   opponentId(userId){
     if(userId === this.playerIds[0]){
@@ -156,13 +142,29 @@ class Match{
     };
 
     const socket = this.sockets.get(userId);
-    console.log("emiting match available");
     socket.emit('matchAvailable', payload);
   }
 
-  sendState(userId){
-    console.log("Sending question round for match " + this.matchId);
+  sendFinishedState(userId){
+    let status = "";
+    if(userId === this.score.winner){
+      status = "You won!";
+    } else {
+      status = "You lost!";
+    }
+    const payload = {
+      data: {
+        matchId: this.matchId,
+        status: status,
+        opponentId: this.opponentId(userId)
+      }
+    };
 
+    const socket = this.sockets.get(userId);
+    socket.emit('matchResult', payload);
+  }
+
+  sendState(userId){
     const payload = {
       data: {
         matchId: this.matchId,
@@ -182,7 +184,6 @@ class Match{
     this.quiz.doForfeit();
     this.sendState(this.opponentId(userId));
   }
-
 
 }
 

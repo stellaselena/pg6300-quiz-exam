@@ -13,8 +13,6 @@ const Header = ({loading, userId, logout}) => {
         {" | "}
         <NavLink to="/play_online" activeStyle={activeStyle}>Play Online</NavLink>
         {" | "}
-        <NavLink to="/highscore" activeStyle={activeStyle}>High score</NavLink>
-        {" | "}
         <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
         {" | "}
         <NavLink to="" activeStyle={activeStyle}>Logged in as {userId}</NavLink>
@@ -26,8 +24,6 @@ const Header = ({loading, userId, logout}) => {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <NavLink to="/"><h2>Quiz game </h2></NavLink>
-        <NavLink to="/highscore" activeStyle={activeStyle}>High score</NavLink>
-        {" | "}
         <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
         {" | "}
         <NavLink to="/signup" activeStyle={activeStyle}>Sign up</NavLink>

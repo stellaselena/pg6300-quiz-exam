@@ -16,8 +16,6 @@ import * as authActions from "../actions/authActions";
 import ManageQuizMatchPage from './play/ManageQuizMatchPage';
 import ManageOnlineQuizMatchPage from './play/online/ManageOnlineQuizMatchPage';
 
-import HighScore from "./highscore/HighScore"; //eslint-disable-line import/no-named-as-default
-
 
 class App extends React.Component {
   constructor(props){
@@ -59,7 +57,6 @@ class App extends React.Component {
         <Route path="/quiz/:id" component={ManageQuizPage}/>
         <Route path="/quiz" component={ManageQuizPage} exact />
         <Route path="/about" component={AboutPage}/>
-        <Route path="/highscore" component={HighScore}/>
         <Route component={NotFound}/>
       </Switch>
 
