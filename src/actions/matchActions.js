@@ -17,11 +17,15 @@ export function loadMatchesSuccess(matches) {
   return {type: types.LOAD_MATCHES_SUCCESS, matches};
 }
 
-export function startMatchSuccess(firstPlayer) {
-  return {type: types.START_MATCH_SUCCESS, firstPlayer};
+export function initialiseMatchSuccess(firstPlayer, matchId) {
+  return {type: types.INITIALISE_MATCH_SUCCESS, firstPlayer, matchId};
 }
 
-export function startMatch() {
+export function startMatchSuccess(success) {
+  return {type: types.START_MATCH_SUCCESS, success};
+}
+
+export function initialiseMatch() {
   return async function (dispatch) {
     dispatch(beginAjaxCall());
     const url = "api/matches";
@@ -30,13 +34,37 @@ export function startMatch() {
     }).then(async response => {
       debugger;
       if (response.status === 201 || response.status === 204) {
-        dispatch(startMatchSuccess(null));
+        dispatch(initialiseMatchSuccess(null));
       } else if (response.status === 200) {
         const payload = await response.json();
         debugger;
-        dispatch(startMatchSuccess(payload.firstUser));
+        dispatch(initialiseMatchSuccess(payload.firstUser, payload.matchId));
       } else if (response.status === 401) {
         dispatch(ajaxCallError("You should login first"));
+      } else {
+        dispatch(ajaxCallError("Error when connecting to server"));
+      }
+    });
+  };
+}
+
+
+export function startMatch() {
+  return async function (dispatch) {
+    dispatch(beginAjaxCall());
+    const url = "api/startMatch";
+    await fetch(url, {
+      method: "post"
+    }).then(response => {
+      debugger;
+      if (response.status === 401) {
+        dispatch(ajaxCallError("You should login first"));
+      } else if (response.status === 400) {
+        dispatch(ajaxCallError("No match id provided"));
+      } else if (response.status === 403) {
+        dispatch(ajaxCallError("Only the first user can start a match"));
+      } else if (response.status === 201) {
+        dispatch(startMatchSuccess(true));
       } else {
         dispatch(ajaxCallError("Error when connecting to server"));
       }

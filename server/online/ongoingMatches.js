@@ -4,13 +4,9 @@ const Match = require('../game/match');
 const userIdToMatch = new Map();
 const matchIdToMatch = new Map();
 
-function startMatch(playerIds){
-
-  const match = new Match(playerIds, deleteMatch);
-
-  console.log("Starting a new match:" +  match.matchId);
-  playerIds.forEach(p => userIdToMatch.set(p, match));
-  matchIdToMatch.set(match.matchId, match);
+function startMatch( matchId){
+  const match = matchIdToMatch.get(matchId);
+  console.log("Starting match:" +  match.matchId);
 
   match.start();
 }
@@ -39,10 +35,23 @@ function getInitialisedMatch(){
     firstUser: null,
   };
   matchIdToMatch.forEach(e => {
-    if(e.hasOwnProperty("initialised") && e["initialised"] === false){
+    if(e.hasOwnProperty("inProgress") && e["inProgress"] === false){
       initialisedMatch.matchId =  e["matchId"];
       initialisedMatch.playerIds =  e["playerIds"];
       initialisedMatch.firstUser =  e["firstUser"];
+    }
+  });
+
+  return initialisedMatch;
+}
+
+function getMatchByLeadUser(firstUser){
+  let initialisedMatch = {
+    matchId: 0
+  };
+  matchIdToMatch.forEach(e => {
+    if(e.hasOwnProperty("firstUser") && e["firstUser"] === firstUser){
+      initialisedMatch.matchId =  e["matchId"];
     }
   });
 
@@ -73,5 +82,4 @@ function forfeit(userId){
 }
 
 
-
-module.exports = {startMatch, forfeit, initialiseMatch, getInitialisedMatch, addPlayerToMatch};
+module.exports = {startMatch, forfeit, initialiseMatch, getInitialisedMatch, addPlayerToMatch, getMatchByLeadUser};

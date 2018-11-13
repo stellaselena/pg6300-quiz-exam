@@ -14,7 +14,7 @@ class Match {
 
     this.playerIds = playerIds;
 
-    this.initialised = initialised;
+    this.inProgress = initialised;
 
     this.matchId = this.randomId();
 
@@ -35,18 +35,25 @@ class Match {
   }
 
   start() {
+    this.inProgress = true;
+
     console.log("registering listeners and sending state to players");
     this.playerIds.forEach(p => {
       this.registerListener(p);
       this.sendInitialState(p);
     });
+
+    this.quiz.nextRound(0);
+
+    this.playerIds.forEach(p => this.sendState(p));
+
+    this.sendQuestion();
   }
 
   addPlayer(playerId){
     this.playerIds.push(playerId);
     this.sockets.set(playerId, ActivePlayers.getSocket(playerId));
-    console.log( this.playerIds);
-    console.log( this.sockets);
+
 
   }
 
@@ -105,7 +112,6 @@ class Match {
     });
 
     socket.on('matchRequest', data => {
-      this.initialised = true;
 
       if (data === null || data === undefined) {
         socket.emit("question", {error: "No payload provided"});

@@ -35,7 +35,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
       timeLeft: 10,
       round: 0,
       matchId: null,
-      initialised: null,
+      inProgress: false,
       opponentId: null,
       isFirstPlayer: false
 
@@ -201,9 +201,10 @@ class ManageOnlineQuizMatchPage extends React.Component {
         this.setState({errors: errors});
         return;
       } else {
-        this.props.actions.startMatch().then(() => {
+        this.props.actions.initialiseMatch().then(() => {
           this.setState({
-            isFirstPlayer: this.props.firstPlayer === this.props.userId
+            isFirstPlayer: this.props.firstPlayer === this.props.userId,
+            matchId: this.props.matchId
           });
         });
       }
@@ -220,11 +221,17 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
   startMatch() {
-    this.socket.emit('matchRequest', {
-      userId: this.props.userId,
-      matchId: this.state.matchId,
-      round: this.state.round
+    debugger;
+    this.props.actions.startMatch().then(() => {
+      this.setState({
+        inProgress: this.props.inProgress
+      });
     });
+    // this.socket.emit('matchRequest', {
+    //   userId: this.props.userId,
+    //   matchId: this.state.matchId,
+    //   round: this.state.round
+    // });
 
   }
 
@@ -295,7 +302,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
           onAnswer={this.checkForCorrectAnswer}
           answerCorrect={this.state.answerSelected}
           answerDisabled={this.state.loading}
-          buttonHidden={!this.state.isFirstPlayer}
+          buttonHidden={!this.state.isFirstPlayer || this.state.inProgress}
           onStart={this.startMatch}
           score={this.state.score}
           timeLeft={this.state.timeLeft}
@@ -314,6 +321,7 @@ ManageOnlineQuizMatchPage.propTypes = {
   userId: PropTypes.string,
   matchLog: PropTypes.array,
   firstPlayer: PropTypes.string,
+  inProgress: PropTypes.bool
 };
 
 function mapStateToProps(state, ownProps) {
@@ -327,7 +335,8 @@ function mapStateToProps(state, ownProps) {
     quiz: quiz,
     userId: state.auth.userId,
     match: state.match,
-    firstPlayer: state.match.firstPlayer
+    firstPlayer: state.match.firstPlayer,
+    inProgress: state.match.inProgress
 
   };
 }

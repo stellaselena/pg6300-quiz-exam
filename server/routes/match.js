@@ -65,14 +65,34 @@ router.post('/matches', (req, res) => {
     const playerIds = [req.user.id, opponent];
     console.log("taking player from queue " + opponent);
     OngoingMatches.initialiseMatch(playerIds);
-    const initialisedMatch = OngoingMatches.getInitialisedMatch();
-    console.log(initialisedMatch);
+
     res.status(201).send();
     return;
   }
 
   PlayerQueue.addUser(req.user.id);
   res.status(200).json({firstUser: req.user.id});
+
+});
+
+router.post('/startMatch', (req, res) => {
+
+  if (!req.user) {
+    res.status(401).send();
+    return;
+  }
+
+  let foundMatch = OngoingMatches.getMatchByLeadUser(req.user.id);
+
+  console.log(foundMatch);
+
+  if(foundMatch.matchId === 0){
+    res.status(404).send();
+    return;
+  }
+
+  OngoingMatches.startMatch(foundMatch.matchId);
+  res.status(201).send();
 
 });
 

@@ -2,8 +2,9 @@ export default {
   quizzes: [],
   categories: [],
   match: {
-    initialised: false,
+    inProgress: false,
     firstPlayer: null,
+    matchId: null,
     quiz: {},
     matchLog: []
   },

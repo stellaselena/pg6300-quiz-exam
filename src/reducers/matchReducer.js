@@ -26,13 +26,19 @@ export default function quizzes(state = initialState.match, action) {
     case types.LOAD_RANDOM_QUIZ_SUCCESS:
       return {
         ...state,
-          quiz:action.quiz
+        quiz: action.quiz
       };
 
+    case types.INITIALISE_MATCH_SUCCESS:
+      return {
+        ...state,
+        firstPlayer: action.firstPlayer,
+        matchId: action.matchId
+      };
     case types.START_MATCH_SUCCESS:
       return {
         ...state,
-        firstPlayer:action.firstPlayer
+        inProgress: action.success,
       };
 
     default:
