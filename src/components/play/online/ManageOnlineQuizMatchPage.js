@@ -93,7 +93,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
       const data = dto.data;
 
       let quiz = Object.assign({}, this.state.quiz);
-      debugger;
       quiz.question =  data.isFirstPlayer ? "Match available. Press Begin Match to start!" : "Match will start soon.";
 
       this.setState({
@@ -175,7 +174,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
         loading: true,
         timeLeft: 0
       });
-      debugger;
       if(data.status.indexOf("won") !== -1){
         toastr.success("You won with a score of " + this.state.score);
       } else if(data.status.indexOf("terminated") !== -1){
@@ -204,7 +202,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
         this.props.actions.initialiseMatch().then(() => {
           this.setState({
             isFirstPlayer: this.props.firstPlayer === this.props.userId,
-            matchId: this.props.matchId
+            matchId: this.props.match.matchId
           });
         });
       }
@@ -221,7 +219,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
   startMatch() {
-    debugger;
     this.props.actions.startMatch().then(() => {
       this.setState({
         inProgress: this.props.inProgress
@@ -321,7 +318,8 @@ ManageOnlineQuizMatchPage.propTypes = {
   userId: PropTypes.string,
   matchLog: PropTypes.array,
   firstPlayer: PropTypes.string,
-  inProgress: PropTypes.bool
+  inProgress: PropTypes.bool,
+  match: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {

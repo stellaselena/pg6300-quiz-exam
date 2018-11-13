@@ -32,12 +32,10 @@ export function initialiseMatch() {
     await fetch(url, {
       method: "post"
     }).then(async response => {
-      debugger;
       if (response.status === 201 || response.status === 204) {
         dispatch(initialiseMatchSuccess(null));
       } else if (response.status === 200) {
         const payload = await response.json();
-        debugger;
         dispatch(initialiseMatchSuccess(payload.firstUser, payload.matchId));
       } else if (response.status === 401) {
         dispatch(ajaxCallError("You should login first"));
@@ -56,7 +54,6 @@ export function startMatch() {
     await fetch(url, {
       method: "post"
     }).then(response => {
-      debugger;
       if (response.status === 401) {
         dispatch(ajaxCallError("You should login first"));
       } else if (response.status === 400) {

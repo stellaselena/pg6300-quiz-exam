@@ -4,6 +4,10 @@ const Quizzes = require('../db/quizzes');
 const router = express.Router();
 
 router.post('/saveQuiz', function (req, res) {
+  if(!req.user) {
+    res.status(401).send();
+    return;
+  }
   if (req.body.question.length < 5) {
     res.status(400).send(`Question must be at least 5 characters long.`);
   }
@@ -17,6 +21,10 @@ router.post('/saveQuiz', function (req, res) {
 });
 
 router.put('/updateQuiz', function (req, res) {
+  if(!req.user) {
+    res.status(401).send();
+    return;
+  }
   if (req.body.question.length < 5) {
     res.status(400).send(`Question must be at least 5 characters long.`);
   }

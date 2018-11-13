@@ -34,6 +34,11 @@ class SignUp extends React.Component{
 
 	}
 	onPasswordChange(event){
+    if(event.target.value === this.state.confirm){
+      return this.setState({password: event.target.value, errorMsg: null});
+    } else {
+      this.setState({password: event.target.value, errorMsg: "Passwords do not match"});
+    }
 		const password = event.target.value;
     return this.setState({password: password});
 
@@ -49,16 +54,22 @@ class SignUp extends React.Component{
   signUp(event){
     event.preventDefault();
     this.setState({saving: true});
-    this.props.actions.signUp(this.state.userId, this.state.password)
-      .then((response) => {
-        if(response == 204){
-          this.setState({saving: false, redirect: true});
-          toastr.success('Signed in as ' + this.state.userId);
-        } else toastr.error("Something went wrong");})
-      .catch(error => {
-        toastr.error(error);
-        this.setState({saving: false});
-      });
+    if(this.state.password !== this.state.confirm){
+      toastr.error("Passwords do not match");
+      this.setState({saving: false});
+    } else {
+      this.props.actions.signUp(this.state.userId, this.state.password)
+        .then((response) => {
+          if(response == 204){
+            this.setState({saving: false, redirect: true});
+            toastr.success('Signed in as ' + this.state.userId);
+          } else toastr.error("Something went wrong");})
+        .catch(error => {
+          toastr.error(error);
+          this.setState({saving: false});
+        });
+    }
+
   }
 
 
