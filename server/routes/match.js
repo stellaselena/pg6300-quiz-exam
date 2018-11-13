@@ -84,8 +84,6 @@ router.post('/startMatch', (req, res) => {
 
   let foundMatch = OngoingMatches.getMatchByLeadUser(req.user.id);
 
-  console.log(foundMatch);
-
   if(foundMatch.matchId === 0){
     res.status(404).send();
     return;

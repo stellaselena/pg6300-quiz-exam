@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import {connect} from 'react-redux';
 import {Redirect, withRouter} from 'react-router-dom';
 import * as matchActions from '../../actions/matchActions';
-import QuizMatchPage from './QuizMatchPage';
+import QuizMatchPage from './common/QuizMatchPage';
 import toastr from 'toastr';
 
 class ManageQuizMatchPage extends React.Component {
@@ -104,7 +104,7 @@ class ManageQuizMatchPage extends React.Component {
     event.preventDefault();
     this.saveMatch();
     toastr.info("Match ended! Score " + this.state.score);
-    this.props.history.push('/quiz');
+    this.props.history.push('/');
 
   }
 

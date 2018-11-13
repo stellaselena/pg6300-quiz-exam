@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {Redirect, withRouter} from 'react-router-dom';
 import * as matchActions from '../../../actions/matchActions';
 import * as authActions from '../../../actions/authActions';
-import OnlineQuizMatchPage from './OnlineQuizMatchPage';
+import OnlineQuizMatchPage from '../common/QuizMatchPage';
 import toastr from 'toastr';
 import openSocket from 'socket.io-client';
 import {PlayerOnline} from "./PlayerOnline";
@@ -298,7 +298,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
           correctAnswer={this.state.quiz.correctAnswer}
           onAnswer={this.checkForCorrectAnswer}
           answerCorrect={this.state.answerSelected}
-          answerDisabled={this.state.loading}
+          disabled={this.state.loading}
           buttonHidden={!this.state.isFirstPlayer || this.state.inProgress}
           onStart={this.startMatch}
           score={this.state.score}

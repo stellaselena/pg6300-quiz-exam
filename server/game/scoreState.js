@@ -32,6 +32,8 @@ class ScoreState {
         score: score
       };
       this.matchScore.push(roundScore);
+    } else {
+      return 0;
     }
   }
 
