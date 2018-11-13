@@ -15,6 +15,40 @@ function startMatch(playerIds){
   match.start();
 }
 
+function initialiseMatch(playerIds){
+  const match = new Match(playerIds, false, deleteMatch);
+
+  console.log("Initialising a new match:" +  match.matchId);
+
+  playerIds.forEach(p => userIdToMatch.set(p, match));
+  matchIdToMatch.set(match.matchId, match);
+}
+
+function addPlayerToMatch(matchId, playerId){
+  const match = matchIdToMatch.get(matchId);
+  match.addPlayer(playerId);
+
+  matchIdToMatch.set(match.matchId, match);
+  userIdToMatch.set(playerId, match);
+}
+
+function getInitialisedMatch(){
+  let initialisedMatch = {
+    matchId: 0,
+    playerIds: [],
+    firstUser: null,
+  };
+  matchIdToMatch.forEach(e => {
+    if(e.hasOwnProperty("initialised") && e["initialised"] === false){
+      initialisedMatch.matchId =  e["matchId"];
+      initialisedMatch.playerIds =  e["playerIds"];
+      initialisedMatch.firstUser =  e["firstUser"];
+    }
+  });
+
+  return initialisedMatch;
+}
+
 function deleteMatch(matchId){
   const match = matchIdToMatch.get(matchId);
   if(match === undefined){
@@ -40,4 +74,4 @@ function forfeit(userId){
 
 
 
-module.exports = {startMatch, forfeit};
+module.exports = {startMatch, forfeit, initialiseMatch, getInitialisedMatch, addPlayerToMatch};

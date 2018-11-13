@@ -17,20 +17,25 @@ export function loadMatchesSuccess(matches) {
   return {type: types.LOAD_MATCHES_SUCCESS, matches};
 }
 
-export function startMatchSuccess(success) {
-  return {type: types.START_MATCH_SUCCESS, success};
+export function startMatchSuccess(firstPlayer) {
+  return {type: types.START_MATCH_SUCCESS, firstPlayer};
 }
 
-export function startMatch(){
+export function startMatch() {
   return async function (dispatch) {
     dispatch(beginAjaxCall());
     const url = "api/matches";
     await fetch(url, {
       method: "post"
-    }).then(response => {
+    }).then(async response => {
+      debugger;
       if (response.status === 201 || response.status === 204) {
-        dispatch(startMatchSuccess(true));
-      } else if(response.status === 401) {
+        dispatch(startMatchSuccess(null));
+      } else if (response.status === 200) {
+        const payload = await response.json();
+        debugger;
+        dispatch(startMatchSuccess(payload.firstUser));
+      } else if (response.status === 401) {
         dispatch(ajaxCallError("You should login first"));
       } else {
         dispatch(ajaxCallError("Error when connecting to server"));

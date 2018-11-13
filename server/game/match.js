@@ -7,12 +7,14 @@ const ActivePlayers = require('../online/playersOnline');
 
 class Match {
 
-  constructor(playerIds, callbackWhenFinished) {
+  constructor(playerIds, initialised, callbackWhenFinished) {
 
     this.quiz = new QuizState();
     this.score = new ScoreState();
 
     this.playerIds = playerIds;
+
+    this.initialised = initialised;
 
     this.matchId = this.randomId();
 
@@ -40,8 +42,19 @@ class Match {
     });
   }
 
+  addPlayer(playerId){
+    this.playerIds.push(playerId);
+    this.sockets.set(playerId, ActivePlayers.getSocket(playerId));
+    console.log( this.playerIds);
+    console.log( this.sockets);
+
+  }
+
   registerListener(userId) {
     const socket = this.sockets.get(userId);
+
+    socket.removeAllListeners("answer");
+    socket.removeAllListeners("matchRequest");
 
     socket.on('answer', data => {
       console.log("Handling answer from '" + data.userId + "' for round " + data.round
@@ -92,6 +105,8 @@ class Match {
     });
 
     socket.on('matchRequest', data => {
+      this.initialised = true;
+
       if (data === null || data === undefined) {
         socket.emit("question", {error: "No payload provided"});
         return;

@@ -39,27 +39,40 @@ router.post('/matches', (req, res) => {
     return;
   }
 
-  if(PlayerQueue.hasUser(req.user.id)){
+  if (PlayerQueue.hasUser(req.user.id)) {
     res.status(204).send();
     return;
   }
 
   OngoingMatches.forfeit(req.user.id);
 
-  while (PlayerQueue.size() > 0) {
-    const opponent = PlayerQueue.takeUser();
-    if (!ActivePlayers.isActive(opponent)) {
-      continue;
-    }
-    const playerIds =[req.user.id, opponent];
-    OngoingMatches.startMatch(playerIds);
+  const initialisedMatch = OngoingMatches.getInitialisedMatch();
+
+  if (initialisedMatch.matchId !== 0) {
+    console.log("Adding player to match " + req.user.id);
+
+    OngoingMatches.addPlayerToMatch(initialisedMatch.matchId, req.user.id);
 
     res.status(201).send();
     return;
   }
 
+  while (PlayerQueue.size() > 0) {
+    const opponent = PlayerQueue.takeUser();
+    if (!ActivePlayers.isActive(opponent)) {
+      continue;
+    }
+    const playerIds = [req.user.id, opponent];
+    console.log("taking player from queue " + opponent);
+    OngoingMatches.initialiseMatch(playerIds);
+    const initialisedMatch = OngoingMatches.getInitialisedMatch();
+    console.log(initialisedMatch);
+    res.status(201).send();
+    return;
+  }
+
   PlayerQueue.addUser(req.user.id);
-  res.status(201).send();
+  res.status(200).json({firstUser: req.user.id});
 
 });
 

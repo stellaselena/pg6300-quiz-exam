@@ -3,6 +3,7 @@ export default {
   categories: [],
   match: {
     initialised: false,
+    firstPlayer: null,
     quiz: {},
     matchLog: []
   },

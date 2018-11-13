@@ -35,7 +35,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
       timeLeft: 10,
       round: 0,
       matchId: null,
-      initialised: false,
+      initialised: null,
       opponentId: null,
       isFirstPlayer: false
 
@@ -146,9 +146,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
     this.socket.on('matchResult', (dto) => {
 
-
-
-
       let errors = {};
       if (dto === null || dto === undefined) {
         errors.serverError = "Invalid response from server";
@@ -204,7 +201,11 @@ class ManageOnlineQuizMatchPage extends React.Component {
         this.setState({errors: errors});
         return;
       } else {
-        this.props.actions.startMatch();
+        this.props.actions.startMatch().then(() => {
+          this.setState({
+            isFirstPlayer: this.props.firstPlayer === this.props.userId
+          });
+        });
       }
     });
 
@@ -224,9 +225,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
       matchId: this.state.matchId,
       round: this.state.round
     });
-    this.setState({
-      initialised: this.props.initialised
-    });
+
   }
 
   startTimer() {
@@ -296,7 +295,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
           onAnswer={this.checkForCorrectAnswer}
           answerCorrect={this.state.answerSelected}
           answerDisabled={this.state.loading}
-          buttonHidden={!this.state.isFirstPlayer || this.state.initialised}
+          buttonHidden={!this.state.isFirstPlayer}
           onStart={this.startMatch}
           score={this.state.score}
           timeLeft={this.state.timeLeft}
@@ -314,7 +313,7 @@ ManageOnlineQuizMatchPage.propTypes = {
   quiz: PropTypes.object.isRequired,
   userId: PropTypes.string,
   matchLog: PropTypes.array,
-  initialised: PropTypes.bool,
+  firstPlayer: PropTypes.string,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -328,7 +327,7 @@ function mapStateToProps(state, ownProps) {
     quiz: quiz,
     userId: state.auth.userId,
     match: state.match,
-    initialised: state.match.initialised
+    firstPlayer: state.match.firstPlayer
 
   };
 }
