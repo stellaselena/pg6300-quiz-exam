@@ -49,14 +49,20 @@ class ScoreState {
   }
 
   getHighestScore(players){
-    let highestScore = 0;
+
+    const playersTotalScore = [];
+
     players.forEach(player => {
       let userScore = this.getTotalScore(player);
-      if(userScore > highestScore){
-        highestScore = userScore;
-        this.winner = player;
-      }
+      playersTotalScore.push({player, userScore});
     });
+
+    const sortedTotalScore = playersTotalScore.sort((p1,p2) => {
+      return p1.userScore- p2.userScore;
+    });
+
+    return sortedTotalScore.reverse();
+
   }
 
   answeredForRound(players, round){

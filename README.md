@@ -71,5 +71,5 @@ Refer to the comments in the code stating which code has been adapted from the c
 #### Challenges
 I experienced some weird behaviour when running tests, they would randomly fail
 with a timeout error. This occurred only on certain machines. I tried to reproduce the error
-on other machines and Jenkins but to no avail. An ugly way of solving this issue was to add
-a --timeout flag in the test script and increase the default timeout of Mocha.
+on other machines and Jenkins but to no avail. An ugly way of solving this issue is to either add
+a --timeout flag in the test script or to manually add timeout to functions and increase the default timeout of Mocha.

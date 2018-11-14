@@ -54,7 +54,7 @@ class Login extends React.Component {
 
 	render() {
 		if (this.state.redirect) {
-      return <Redirect to="/quizzes" />;
+      return <Redirect to="/" />;
     }
 		return (
 				<LoginForm

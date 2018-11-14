@@ -49,7 +49,6 @@ router.post('/matches', (req, res) => {
   const initialisedMatch = OngoingMatches.getInitialisedMatch();
 
   if (initialisedMatch.matchId !== 0) {
-    console.log("Adding player to match " + req.user.id);
 
     OngoingMatches.addPlayerToMatch(initialisedMatch.matchId, req.user.id);
 
@@ -63,7 +62,6 @@ router.post('/matches', (req, res) => {
       continue;
     }
     const playerIds = [req.user.id, opponent];
-    console.log("taking player from queue " + opponent);
     OngoingMatches.initialiseMatch(playerIds);
 
     res.status(201).send();

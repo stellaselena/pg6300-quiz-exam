@@ -32,8 +32,7 @@ export default function quizzes(state = initialState.match, action) {
     case types.INITIALISE_MATCH_SUCCESS:
       return {
         ...state,
-        firstPlayer: action.firstPlayer,
-        matchId: action.matchId
+        firstPlayer: action.firstPlayer
       };
     case types.START_MATCH_SUCCESS:
       return {

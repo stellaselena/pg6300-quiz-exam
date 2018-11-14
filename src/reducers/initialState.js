@@ -4,7 +4,6 @@ export default {
   match: {
     inProgress: false,
     firstPlayer: null,
-    matchId: null,
     quiz: {},
     matchLog: []
   },

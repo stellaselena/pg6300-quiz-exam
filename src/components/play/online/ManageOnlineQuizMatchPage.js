@@ -36,8 +36,9 @@ class ManageOnlineQuizMatchPage extends React.Component {
       round: 0,
       matchId: null,
       inProgress: false,
-      opponentId: null,
-      isFirstPlayer: false
+      opponentIds: null,
+      isFirstPlayer: false,
+      canStart: false,
 
     };
 
@@ -90,14 +91,32 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
       this.setState({
         quiz: quiz,
+        canStart: true,
         loading: true,
         matchId: data.matchId,
-        opponentId: data.opponentId,
+        opponentIds: data.opponentIds,
         isFirstPlayer: data.isFirstPlayer
 
       });
 
       this.opponent.setMatchId(data.matchId);
+      if(this.state.isFirstPlayer){
+        toastr.info("Player "+ this.state.opponentIds[0] + " has joined");
+      }
+
+    });
+
+    this.socket.on("newPlayer", (dto) => {
+      if (dto === null || dto === undefined) {
+        this.setState({error: "Invalid response from server"});
+        return;
+      }
+
+      const data = dto.data;
+
+      toastr.info("Player " + data.opponentId + " has joined");
+      //todo add opponent to state
+      this.setState({opponentIds:  [...this.state.opponentIds, data.opponentId]});
 
     });
 
@@ -185,8 +204,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
       } else {
         this.props.actions.initialiseMatch().then(() => {
           this.setState({
-            isFirstPlayer: this.props.firstPlayer === this.props.userId,
-            matchId: this.props.match.matchId
+            isFirstPlayer: this.props.firstPlayer === this.props.userId
           });
         });
       }
@@ -208,12 +226,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
         inProgress: this.props.inProgress
       });
     });
-    // this.socket.emit('matchRequest', {
-    //   userId: this.props.userId,
-    //   matchId: this.state.matchId,
-    //   round: this.state.round
-    // });
-
   }
 
   startTimer() {
@@ -256,7 +268,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
   render() {
-    if (this.state.error !== null || this.state.error !== undefined) {
+    if (this.state.error) {
       debugger;
         return (
           <div className="container text-center"><h1>{this.state.error}</h1>
@@ -271,16 +283,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
       );
     }
 
-    if (this.state.errors.length > 0) {
-      {
-        this.state.errors.map((error, i) => {
-          return (
-            <div key={i}><h2>{error.valueOf()}</h2></div>
-          );
-        });
-      }
-    }
-
     return (
       <div>
         <OnlineQuizMatchPage
@@ -290,7 +292,8 @@ class ManageOnlineQuizMatchPage extends React.Component {
           onAnswer={this.checkForCorrectAnswer}
           answerCorrect={this.state.answerSelected}
           disabled={this.state.loading}
-          buttonHidden={!this.state.isFirstPlayer || this.state.inProgress}
+          // canStart={!this.state.canStart}
+          buttonHidden={!this.state.isFirstPlayer}
           onStart={this.startMatch}
           score={this.state.score}
           timeLeft={this.state.timeLeft}

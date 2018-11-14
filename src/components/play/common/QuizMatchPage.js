@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const QuizMatchPage = ({question, answers, onNext, onAnswer, answerCorrect, disabled, buttonHidden, score, timeLeft, round, onStart}) => {
+const QuizMatchPage = ({question, answers, canStart, onNext, onAnswer, answerCorrect, disabled, buttonHidden, score, timeLeft, round, onStart}) => {
 
   const background = (id) => {
     let color;
@@ -75,9 +75,9 @@ const QuizMatchPage = ({question, answers, onNext, onAnswer, answerCorrect, disa
             </button> :
             <button className="btn btn-primary btn-md btn-randomQuiz"
                     onClick={onStart}
-                    hidden={buttonHidden}>
+                    hidden={buttonHidden}
+                    disabled={canStart}>
               <h4>Begin match</h4></button>
-
           }
         </div>
       </div>

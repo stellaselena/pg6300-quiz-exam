@@ -9,7 +9,7 @@
     "lint": "node_modules/.bin/esw webpack.config.* src tools tests server",
     "lint:watch": "npm run lint -- --watch",
     "testBabel": "mocha --compilers js:babel-core/register --require babel-polyfill",
-    "test": "mocha --timeout 10000 --reporter spec tools/testSetup.js tests/**/*.test.js",
+    "test": "mocha --timeout 15000 --reporter spec tools/testSetup.js tests/**/*.test.js",
     "test:watch": "npm run test -- --watch",
     "jest": "jest --coverage",
     "clean-dist": "npm run remove-dist && mkdir dist",

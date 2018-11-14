@@ -34,14 +34,16 @@ class Match {
     return crypto.randomBytes(10).toString('hex');
   }
 
-  start() {
-    this.inProgress = true;
-
+  initialise(){
     console.log("registering listeners and sending state to players");
     this.playerIds.forEach(p => {
       this.registerListener(p);
       this.sendInitialState(p);
     });
+  }
+
+  start() {
+    this.inProgress = true;
 
     this.quiz.nextRound(0);
 
@@ -51,9 +53,27 @@ class Match {
   }
 
   addPlayer(playerId){
+    this.playerIds.forEach(p => this.sendNewPlayer(playerId, p));
+
     this.playerIds.push(playerId);
+
     this.sockets.set(playerId, ActivePlayers.getSocket(playerId));
 
+    this.registerListener(playerId);
+    this.sendInitialState(playerId);
+
+  }
+
+  sendNewPlayer(newPlayer, opponentId){
+    const socket = this.sockets.get(opponentId);
+
+    const payload = {
+      data: {
+        opponentId: newPlayer
+      }
+    };
+
+    socket.emit("newPlayer", payload);
 
   }
 
@@ -61,7 +81,6 @@ class Match {
     const socket = this.sockets.get(userId);
 
     socket.removeAllListeners("answer");
-    socket.removeAllListeners("matchRequest");
 
     socket.on('answer', data => {
       console.log("Handling answer from '" + data.userId + "' for round " + data.round
@@ -110,30 +129,6 @@ class Match {
         }
       }
     });
-
-    socket.on('matchRequest', data => {
-
-      if (data === null || data === undefined) {
-        socket.emit("question", {error: "No payload provided"});
-        return;
-      }
-      if (data.userId === undefined || data.userId === null) {
-        socket.emit("question", {error: "No userId provided"});
-      }
-      if (data.userId !== this.firstUser) {
-        socket.emit("question", {error: "This user cannot start the match"});
-      }
-
-      if (data.matchId !== this.matchId) {
-        console.log("Invalid matchId: " + data.matchId + " !== " + this.matchId);
-        return;
-      }
-      this.quiz.nextRound(0);
-
-      this.playerIds.forEach(p => this.sendState(p));
-
-      this.sendQuestion();
-    });
   }
 
   opponentIds(userId) {
@@ -142,33 +137,38 @@ class Match {
 
   sendInitialState(userId) {
 
-    console.log("Sending initial state to '" + userId + "' for match " + this.matchId);
 
     const payload = {
       data: {
         matchId: this.matchId,
         quizDto: this.quiz.extractDto(),
         isFirstPlayer: userId === this.firstUser,
-        opponentId: this.opponentIds(userId)
+        opponentIds: this.opponentIds(userId)
       }
     };
+
+    console.log("Sending initial state to '" + userId + "' for match " + this.matchId);
+
 
     const socket = this.sockets.get(userId);
     socket.emit('matchAvailable', payload);
   }
 
   sendFinishedState(userId) {
+    const score = this.score.getHighestScore(this.playerIds);
     let status = "";
-    if (userId === this.score.winner) {
+    if(score[0].player === userId){
+      this.score.winner = userId;
       status = "You won!";
     } else {
-      status = "You lost!";
+      const position = score.findIndex(p => p.player === userId ) + 1;
+      status = position + ". place. You lost!";
     }
     const payload = {
       data: {
         matchId: this.matchId,
         status: status,
-        opponentId: this.opponentIds(userId)
+        opponentIds: this.opponentIds(userId)
       }
     };
 
@@ -184,7 +184,7 @@ class Match {
         matchId: this.matchId,
         quizDto: this.quiz.extractDto(),
         isFirstPlayer: userId === this.firstUser,
-        opponentId: this.opponentIds(userId)
+        opponentIds: this.opponentIds(userId)
       }
     };
 
@@ -200,7 +200,7 @@ class Match {
       data: {
         matchId: this.matchId,
         status: status,
-        opponentId: this.opponentIds(userId)
+        opponentIds: this.opponentIds(userId)
       }
     };
     clearInterval(this.nextRoundInterval);

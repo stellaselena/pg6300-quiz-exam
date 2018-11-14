@@ -18,6 +18,8 @@ function initialiseMatch(playerIds){
 
   playerIds.forEach(p => userIdToMatch.set(p, match));
   matchIdToMatch.set(match.matchId, match);
+  console.log(playerIds);
+  match.initialise();
 }
 
 function addPlayerToMatch(matchId, playerId){
@@ -26,6 +28,7 @@ function addPlayerToMatch(matchId, playerId){
 
   matchIdToMatch.set(match.matchId, match);
   userIdToMatch.set(playerId, match);
+
 }
 
 function getInitialisedMatch(){

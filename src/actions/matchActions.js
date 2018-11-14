@@ -36,7 +36,7 @@ export function initialiseMatch() {
         dispatch(initialiseMatchSuccess(null));
       } else if (response.status === 200) {
         const payload = await response.json();
-        dispatch(initialiseMatchSuccess(payload.firstUser, payload.matchId));
+        dispatch(initialiseMatchSuccess(payload.firstUser));
       } else if (response.status === 401) {
         dispatch(ajaxCallError("You should login first"));
       } else {
