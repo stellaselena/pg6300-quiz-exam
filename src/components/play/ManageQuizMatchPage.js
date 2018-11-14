@@ -12,7 +12,6 @@ class ManageQuizMatchPage extends React.Component {
     super(props, context);
     this.state = {
       quiz: this.props.quiz,
-      errors: {},
       redirect: false,
       loading: false,
       answerSelected: {

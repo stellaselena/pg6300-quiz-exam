@@ -16,8 +16,8 @@ describe ('Manage Quiz Page', () => {
     };
     const wrapper = mount(<ManageQuizPage {...props}/>);
     const saveButton = wrapper.find('input').last();
-    expect(saveButton.prop('type')).toBe('submit'); //assure we found the submit.
+    expect(saveButton.prop('type')).toBe('submit');
     saveButton.simulate('click');
-    expect(wrapper.state().errors.question).toBe('Question must be at least 5 characters.');
+    expect(wrapper.state().errors.question).toBe('Question must be at least 5 characters long.');
   });
 });

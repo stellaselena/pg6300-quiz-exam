@@ -22,7 +22,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
         correctAnswer: '',
         category: ''
       },
-      errors: {},
+      error: null,
       redirect: false,
       loading: false,
       answerSelected: {
@@ -49,12 +49,10 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
   componentDidMount() {
-    let errors = {};
     const userId = this.props.userId;
 
     if (userId === null) {
-      errors.loginErr = "You should login first";
-      this.setState({errors: errors});
+      this.setState({error: "You should login first"});
       return;
     }
 
@@ -71,22 +69,17 @@ class ManageOnlineQuizMatchPage extends React.Component {
     this.socket = openSocket(window.location.origin);
 
     this.socket.on('disconnect', () => {
-      let errors = {};
-      errors.disconnected = "Disconnected from Server";
-      this.setState({errors: errors});
+      this.setState({error: "Disconnected from Server"});
     });
 
     this.socket.on("matchAvailable", (dto) => {
-      let errors = {};
-      errors.serverError = "Invalid response from server";
       if (dto === null || dto === undefined) {
-        this.setState({errors: errors});
+        this.setState({error: "Invalid response from server"});
         return;
       }
 
       if (dto.error !== null && dto.error !== undefined) {
-        errors.dtoError = dto.error;
-        this.setState({errors: errors.dtoError});
+        this.setState({error: dto.error});
         return;
       }
 
@@ -109,17 +102,14 @@ class ManageOnlineQuizMatchPage extends React.Component {
     });
 
     this.socket.on('question', (dto) => {
-      let errors = {};
       clearInterval(this.interval);
       if (dto === null || dto === undefined) {
-        errors.serverError = "Invalid response from server";
-        this.setState({errors: errors});
+        this.setState({error: "Invalid response from server"});
         return;
       }
 
       if (dto.error !== null && dto.error !== undefined) {
-        errors.dtoError = dto.error;
-        this.setState({errors: errors});
+        this.setState({error:  dto.error});
         return;
       }
 
@@ -145,16 +135,13 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
     this.socket.on('matchResult', (dto) => {
 
-      let errors = {};
       if (dto === null || dto === undefined) {
-        errors.serverError = "Invalid response from server";
-        this.setState({errors: errors});
+        this.setState({error: "Invalid response from server"});
         return;
       }
 
       if (dto.error !== null && dto.error !== undefined) {
-        errors.dtoError = dto.error;
-        this.setState({errors: errors});
+        this.setState({error: dto.error});
         return;
       }
 
@@ -189,14 +176,11 @@ class ManageOnlineQuizMatchPage extends React.Component {
     });
 
     this.props.actions.websocketLogin(this.socket).then(response => {
-      let errors = {};
       if (response === 401) {
-        errors.websocketError = "You should log in first";
-        this.setState({errors: errors});
+        this.setState({error: "You should log in first"});
         return;
       } else if (response !== 201) {
-        errors.websocketError = "Error when connecting to server";
-        this.setState({errors: errors});
+        this.setState({error: "Error when connecting to server"});
         return;
       } else {
         this.props.actions.initialiseMatch().then(() => {
@@ -272,6 +256,13 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
   render() {
+    if (this.state.error !== null || this.state.error !== undefined) {
+      debugger;
+        return (
+          <div className="container text-center"><h1>{this.state.error}</h1>
+          </div>
+        );
+    }
 
     if (!this.props.userId) {
       return (

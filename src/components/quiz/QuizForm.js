@@ -29,14 +29,16 @@ const QuizForm = ({quiz, allCategories, allCorrectAnswers, onSave, onChange, sav
         value={quiz.correctAnswer && quiz.correctAnswer.toString()}
         defaultOption="Select correct answer"
         options={allCorrectAnswers}
-        onChange={onChange} error={errors.correctAnswer}/>
+        onChange={onChange}
+        error={errors.correctAnswer}/>
       <SelectInput
         name="category"
         label="Category"
         value={quiz.category}
         defaultOption="Select category"
         options={allCategories}
-        onChange={onChange} error={errors.category}/>
+        onChange={onChange}
+        error={errors.category}/>
 
       <input
         type="submit"

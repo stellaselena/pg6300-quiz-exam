@@ -64,22 +64,23 @@ export function getRole(){
 }
 
 export function login(userId, password){
-  return function (dispatch){
+  return async function (dispatch){
     dispatch(beginAjaxCall());
     const url = "api/login";
     const payload = {userId: userId, password: password};
-    return fetch(url, {
+    return await fetch(url, {
       method: "post",
       headers: {
         "Content-Type": 'application/json'
       },
       body: JSON.stringify(payload)
-    }).then( response => {
-      if (response.status === 401) {
+    }).then( async response => {
+      let status = await response.status;
+      if (status === 401) {
         dispatch(ajaxCallError("Invalid userId or password"));
         return 401;
-      } else if(response.status !== 204) {
-        dispatch(ajaxCallError("Error when connecting to server. Status code " + response.status));
+      } else if(status !== 204) {
+        dispatch(ajaxCallError("Error when connecting to server. Status code " + status));
         return 401;
       } else {
         dispatch(loginSuccess(userId));
@@ -94,7 +95,7 @@ export function websocketLogin(socket){
   return async function (dispatch){
     dispatch(beginAjaxCall());
     const url = "/api/wstoken";
-    return fetch(url, {
+    return await fetch(url, {
       method: "post"
     }).then(async response => {
       if (response.status === 401) {
@@ -116,17 +117,17 @@ export function websocketLogin(socket){
 }
 
 export function signUp(userId, password){
-  return function (dispatch){
+  return async function (dispatch){
     dispatch(beginAjaxCall());
     const url = "api/signup";
     const payload = {userId: userId, password: password};
-    return fetch(url, {
+    return await fetch(url, {
       method: "post",
       headers: {
         "Content-Type": 'application/json'
       },
       body: JSON.stringify(payload)
-    }).then(function(response){
+    }).then(async response => {
       if (response.status === 400) {
         dispatch(ajaxCallError("Invalid userId or password"));
         return 400;
@@ -143,10 +144,10 @@ export function signUp(userId, password){
 }
 
 export function logout(){
-  return function (dispatch){
+  return async function (dispatch){
     dispatch(beginAjaxCall());
     const url = "api/logout";
-    return fetch(url, {method: "post"}).then( response => {
+    return await fetch(url, {method: "post"}).then(async response => {
       if (response.status !== 204) {
         dispatch(ajaxCallError("Something went wrong while logging out"));
         return 401;

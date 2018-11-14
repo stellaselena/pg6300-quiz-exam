@@ -53,7 +53,22 @@ export class ManageQuizPage extends React.Component {
     let errors = {};
 
     if (this.state.quiz.question.length < 5) {
-      errors.question = 'Question must be at least 5 characters.';
+      errors.question = 'Question must be at least 5 characters long.';
+      formIsValid = false;
+    }
+    debugger;
+    if(this.state.quiz.answers === undefined || this.state.quiz.answers.some(a => a.length < 5)){
+      errors.answers = 'Answer must be at least 5 characters long.';
+      formIsValid = false;
+
+    }
+    if(this.state.quiz.correctAnswer === ""){
+      errors.correctAnswer = 'Correct answer is mandatory.';
+      formIsValid = false;
+    }
+
+    if(this.state.quiz.category === ""){
+      errors.category = 'Category is mandatory.';
       formIsValid = false;
     }
 

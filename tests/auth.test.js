@@ -57,59 +57,58 @@ describe("Test fail sign up twice", () =>{
 });
 
 
-// describe("Test logged in when signing up", () =>{
-//   it('Test logged in when signing up', async () => {
+describe("Test logged in when signing up", () =>{
+  it('Test logged in when signing up', async () => {
 
-//     const payload = {userId: 'foo', password: '123'};
+    const payload = {userId: 'foo', password: '123'};
 
-//     let response = await request(app)
-//         .get('/api/user');
-//     expect(response.statusCode).toBe(401);
+    let response = await request(app)
+        .get('/api/user');
+    expect(response.statusCode).toBe(401);
 
-//     response = await request(app)
-//         .post('/api/signup')
-//         .send(payload);
-//     expect(response.statusCode).toBe(204);
-//     const cookie = response.headers['set-cookie'];
+    response = await request(app)
+        .post('/api/signup')
+        .send(payload);
+    expect(response.statusCode).toBe(204);
+    const cookie = response.headers['set-cookie'];
 
-//     response = await request(app)
-//         .get('/api/user')
-//         .set('cookie', cookie);
-//     expect(response.statusCode).toBe(200);
-//     expect(response.body.userId).toBe(payload.userId);
-//   });
-// });
-
-
-// describe("Test sign up, and then login", () =>{
-//   it('Test sign up, and then login', async () => {
-
-//     const payload = {userId: 'foo', password: '123'};
-
-//     let response = await request(app)
-//         .get('/api/user');
-//     expect(response.statusCode).toBe(401);
-
-//     response = await request(app)
-//         .post('/api/signup')
-//         .send(payload);
-//     expect(response.statusCode).toBe(204);
+    response = await request(app)
+        .get('/api/user')
+        .set('cookie', cookie);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.userId).toBe(payload.userId);
+  });
+});
 
 
-//     response = await request(app)
-//         .post('/api/login')
-//         .send(payload);
-//     expect(response.statusCode).toBe(204);
-//     const cookie = response.headers['set-cookie'];
+describe("Test sign up, and then login", () =>{
+  it('Test sign up, and then login', async () => {
 
-//     response = await request(app)
-//         .get('/api/user')
-//         .set('cookie', cookie);
-//     expect(response.statusCode).toBe(200);
-//     expect(response.body.userId).toBe(payload.userId);
-//   });
-// });
+    const payload = {userId: 'foo', password: '123'};
 
+    let response = await request(app)
+        .get('/api/user');
+    expect(response.statusCode).toBe(401);
+
+    response = await request(app)
+        .post('/api/signup')
+        .send(payload);
+    expect(response.statusCode).toBe(204);
+
+
+    response = await request(app)
+        .post('/api/login')
+        .send(payload);
+    expect(response.statusCode).toBe(204);
+    const cookie = response.headers['set-cookie'];
+
+    response = await request(app)
+        .get('/api/user')
+        .set('cookie', cookie);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.userId).toBe(payload.userId);
+  });
+});
 
 
 describe("Test login with wrong password", () =>{
