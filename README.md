@@ -12,7 +12,7 @@
 ## About the application:
 The topic of the application is about an online, multi-player quiz game. A registered user can either play alone or online.
 
-#####Online match
+##### Online match
 
 If X wishes to play online, X can initialise a new match and wait for other players to join. 
 
@@ -22,12 +22,12 @@ Each match consists of 10 rounds, where players get points based on correct answ
 
 At the end of the 10th round, a player with most points will be declared as the winner.
 
-#####Singleplayer match
+##### Singleplayer match
 
 In order to play, a user has to register first.
 
-#####Quiz management page
-Login as admin(`username: admin, password: admin`) to access quiz management page.
+##### Quiz management page
+Login as admin (`username: admin, password: admin`) to access quiz management page.
  
 New quizzes can be added or existing quizzes can be updated from the quiz management page.
 
@@ -58,9 +58,9 @@ New quizzes can be added or existing quizzes can be updated from the quiz manage
 |webpack-dev-middleware	| Webpack middleware support 
 |webpack-hot-middleware	| webpack hot reloading
 
-These are some of the main dependencies, in addition to some other useful libraries.
+These are some of the main dependencies used for this project, in addition to some other useful libraries.
   
-#### Boilerplate used
+#### Boilerplate
 Boilerplate for React + Redux, with Babel, hot reloading and linting adapted from
 https://github.com/coryhouse/pluralsight-redux-starter.
 
