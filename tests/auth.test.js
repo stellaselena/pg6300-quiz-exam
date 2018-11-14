@@ -21,7 +21,7 @@ describe("Test failed login", () =>{
         .send({userId: 'foo', password: '123'});
 
     expect(response.statusCode).toBe(401);
-  });
+  }).timeout(10000);
 });
 
 
@@ -33,7 +33,7 @@ describe("Test sign up", () =>{
         .send({userId: 'foo', password: '123'});
 
     expect(response.statusCode).toBe(204);
-  });
+  }).timeout(10000);
 
 });
 
@@ -52,7 +52,7 @@ describe("Test fail sign up twice", () =>{
         .post('/api/signup')
         .send(payload);
     expect(response.statusCode).toBe(400);
-  });
+  }).timeout(10000);
 
 });
 
@@ -77,7 +77,7 @@ describe("Test logged in when signing up", () =>{
         .set('cookie', cookie);
     expect(response.statusCode).toBe(200);
     expect(response.body.userId).toBe(payload.userId);
-  });
+  }).timeout(10000);
 });
 
 
@@ -107,7 +107,7 @@ describe("Test sign up, and then login", () =>{
         .set('cookie', cookie);
     expect(response.statusCode).toBe(200);
     expect(response.body.userId).toBe(payload.userId);
-  });
+  }).timeout(10000);
 });
 
 
@@ -132,39 +132,37 @@ describe("Test login with wrong password", () =>{
         .post('/api/login')
         .send(payload);
     expect(response.statusCode).toBe(204);
-  });
+  }).timeout(10000);
 });
 
 
+describe("Test logout", () =>{
+  it('Test logout', async () => {
 
-// describe("Test logout", () =>{
-//   it('Test logout', async () => {
+    const payload = {userId: "foo", password: "123"};
 
-//     const payload = {userId: "foo", password: "123"};
+    let response = await request(app)
+        .post('/api/signup')
+        .send(payload);
+    expect(response.statusCode).toBe(204);
+    const cookie = response.headers['set-cookie'];
 
-//     let response = await request(app)
-//         .post('/api/signup')
-//         .send(payload);
-//     expect(response.statusCode).toBe(204);
-//     const cookie = response.headers['set-cookie'];
+    response = await request(app)
+        .get('/api/user')
+        .set('cookie', cookie);
+    expect(response.statusCode).toBe(200);
 
-//     response = await request(app)
-//         .get('/api/user')
-//         .set('cookie', cookie);
-//     expect(response.statusCode).toBe(200);
+    await  request(app)
+        .post('/api/logout')
+        .set('cookie', cookie)
+        .send();
 
-//     await  request(app)
-//         .post('/api/logout')
-//         .set('cookie', cookie)
-//         .send();
-
-//     response = await request(app)
-//         .get('/api/user')
-//         .set('cookie', cookie);
-//     expect(response.statusCode).toBe(401);
-//   });
-// });
-
+    response = await request(app)
+        .get('/api/user')
+        .set('cookie', cookie);
+    expect(response.statusCode).toBe(401);
+  }).timeout(10000);
+});
 
 
 describe("Test get token", () =>{
@@ -196,7 +194,7 @@ describe("Test get token", () =>{
     const second = response.body.wstoken;
 
     expect(first).not.toBe(second);
-  });
+  }).timeout(10000);
 });
 
 
