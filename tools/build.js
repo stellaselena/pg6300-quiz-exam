@@ -1,12 +1,10 @@
-
-/*eslint-disable no-console */
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config.prod';
 import colors from 'colors';
 
 process.env.NODE_ENV = 'production';
 
-console.log(colors.blue('Generating minified production bundle'));
+console.log(colors.blue('Generating minified bundle for production via Webpack...'));
 
 webpack(webpackConfig).run((err, stats) => {
   if (err) {
@@ -27,7 +25,7 @@ webpack(webpackConfig).run((err, stats) => {
 
   console.log(`Webpack stats: ${stats}`);
 
-  console.log(colors.green('App compiled in production mode and written to /dist'));
+  console.log(colors.green('App has been compiled in production mode and written to /dist.'));
 
   return 0;
 });
