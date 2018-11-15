@@ -106,6 +106,8 @@ class Match {
 
       this.score.addUserScore(data.userId, data.round, data.answerSelected.score);
 
+      this.playerIds.forEach(p => this.sendScore(p));
+
       const answersForRound = this.score.answeredForRound(this.playerIds, this.quiz.round);
 
       const expectedAnswers = this.playerIds.length;
@@ -123,7 +125,6 @@ class Match {
           }, 1000);
         } else {
           clearInterval(this.nextRoundInterval);
-          this.score.getHighestScore(this.playerIds);
 
           this.playerIds.forEach(p => this.sendFinishedState(p));
         }
@@ -135,8 +136,14 @@ class Match {
     return this.playerIds.filter(p => p !== userId);
   }
 
-  sendInitialState(userId) {
+  sendScore(userId){
+    const socket = this.sockets.get(userId);
 
+    const score = this.score.getHighestScore(this.playerIds);
+    socket.emit("currentScore", score);
+  }
+
+  sendInitialState(userId) {
 
     const payload = {
       data: {
@@ -148,7 +155,6 @@ class Match {
     };
 
     console.log("Sending initial state to '" + userId + "' for match " + this.matchId);
-
 
     const socket = this.sockets.get(userId);
     socket.emit('matchAvailable', payload);

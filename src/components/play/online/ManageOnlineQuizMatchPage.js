@@ -39,6 +39,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
       opponentIds: null,
       isFirstPlayer: false,
       canStart: false,
+      opponentsScore: []
 
     };
 
@@ -115,8 +116,16 @@ class ManageOnlineQuizMatchPage extends React.Component {
       const data = dto.data;
 
       toastr.info("Player " + data.opponentId + " has joined");
-      //todo add opponent to state
       this.setState({opponentIds:  [...this.state.opponentIds, data.opponentId]});
+
+    });
+    this.socket.on("currentScore", (dto) => {
+      debugger;
+      if (dto === null || dto === undefined) {
+        this.setState({error: "Invalid response from server"});
+        return;
+      }
+      this.setState({opponentsScore:  dto});
 
     });
 
@@ -293,6 +302,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
           answerCorrect={this.state.answerSelected}
           disabled={this.state.loading}
           // canStart={!this.state.canStart}
+          opponentsScore={this.state.opponentsScore}
           buttonHidden={!this.state.isFirstPlayer}
           onStart={this.startMatch}
           score={this.state.score}

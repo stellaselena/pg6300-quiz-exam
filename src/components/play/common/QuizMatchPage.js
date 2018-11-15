@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
+import QuizListRow from "../../quiz/QuizListRow";
 
-const QuizMatchPage = ({question, answers, canStart, onNext, onAnswer, answerCorrect, disabled, buttonHidden, score, timeLeft, round, onStart}) => {
+const QuizMatchPage = ({question, answers, opponentsScore, canStart, onNext, onAnswer, answerCorrect, disabled, buttonHidden, score, timeLeft, round, onStart}) => {
 
   const background = (id) => {
     let color;
@@ -12,7 +14,7 @@ const QuizMatchPage = ({question, answers, canStart, onNext, onAnswer, answerCor
         color = "btn btn-lg jumbotron-answer bg-danger text-white";
       }
     } else {
-      color = "btn btn-lg jumbotron-answer bg-dark text-white";
+      color = "btn btn-lg jumbotron-answer bg-info text-white";
     }
 
     return color;
@@ -21,9 +23,9 @@ const QuizMatchPage = ({question, answers, canStart, onNext, onAnswer, answerCor
   const buttonColor = (round) => {
     let color;
     if (round === 10) {
-      color = "btn btn-danger btn-md btn-randomQuiz";
+      color = "btn btn-info btn-md btn-randomQuiz";
     } else {
-      color = "btn btn-primary btn-md btn-randomQuiz";
+      color = "btn btn-dark btn-md btn-randomQuiz";
     }
 
     return color;
@@ -44,26 +46,47 @@ const QuizMatchPage = ({question, answers, canStart, onNext, onAnswer, answerCor
         </div>
       </div>
       <div className="row">
-        <div className="col-md-2"/>
-        <div className="col-md-8">
+        <div className="col-md-3"/>
+        <div className="col-md-6">
           <div className="jumbotron jumbotron-question bg-dark text-white"><h3>{question}</h3></div>
         </div>
-        <div className="col-md-2"/>
+        <div className="col-md-3">
+          {!onNext &&
+            <div className="match-stats text-center"><h2><b>Player rank</b></h2>
+              <table className="table">
+                <thead>
+                <tr>
+                  <th>Player</th>
+                  <th>Score</th>
+                </tr>
+                </thead>
+                <tbody>
+                {opponentsScore && opponentsScore && opponentsScore.map(o =>
+                  <tr key={o.player}>
+                    <td>{o.player}</td>
+                    <td>{o.userScore}</td>
+                  </tr>
+                )}
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
       </div>
       <div className="row">
         <div className="col-md-6">
-          <button className={background(0)} disabled={disabled} onClick={onAnswer}><h6>{answers[0]}</h6></button>
+          <button className={background(0)} disabled={disabled} onClick={onAnswer}><h5>{answers[0]}</h5></button>
         </div>
         <div className="col-md-6">
-          <button className={background(1)} disabled={disabled} onClick={onAnswer}><h6>{answers[1]}</h6></button>
+          <button className={background(1)} disabled={disabled} onClick={onAnswer}><h5>{answers[1]}</h5></button>
         </div>
       </div>
       <div className="row">
         <div className="col-md-6">
-          <button className={background(2)} disabled={disabled} onClick={onAnswer}><h6>{answers[2]}</h6></button>
+          <button className={background(2)} disabled={disabled} onClick={onAnswer}><h5>{answers[2]}</h5></button>
         </div>
         <div className="col-md-6">
-          <button className={background(3)} disabled={disabled} onClick={onAnswer}><h6>{answers[3]}</h6></button>
+          <button className={background(3)} disabled={disabled} onClick={onAnswer}><h5>{answers[3]}</h5></button>
         </div>
       </div>
       <div className="row">
@@ -73,7 +96,7 @@ const QuizMatchPage = ({question, answers, canStart, onNext, onAnswer, answerCor
                             disabled={!disabled}>
               <h4>{round === 10 ? "End match" : "Next question"}</h4>
             </button> :
-            <button className="btn btn-primary btn-md btn-randomQuiz"
+            <button className="btn btn-dark btn-md btn-randomQuiz"
                     onClick={onStart}
                     hidden={buttonHidden}
                     disabled={canStart}>
@@ -97,7 +120,9 @@ QuizMatchPage.propTypes = {
   timeLeft: PropTypes.number.isRequired,
   round: PropTypes.number.isRequired,
   buttonHidden: PropTypes.bool,
-  onStart: PropTypes.func
+  onStart: PropTypes.func,
+  opponentsScore: PropTypes.array,
+  canStart: PropTypes.func
 
 };
 
