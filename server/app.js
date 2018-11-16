@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 
 const compiler = webpack(config);
 
-if (process.env.NODE_ENV !== 'production') {
+// if (process.env.NODE_ENV !== 'production') {
 
   app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
@@ -33,7 +33,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('webpack-hot-middleware')(compiler));
 
 
-}
+// }
 
 app.use(session({
   secret: 'a secret used to encrypt the session cookies',
