@@ -62,10 +62,10 @@ const QuizMatchPage = ({question, answers, opponentsScore, canStart, onNext, onA
                 </thead>
                 <tbody>
                 {opponentsScore && opponentsScore && opponentsScore.map(o =>
-                  <tr key={o.player}>
-                    <td>{o.player}</td>
-                    <td>{o.userScore}</td>
-                  </tr>
+                {<tr key={o.player}>
+                  <td>{o.player}</td>
+                  <td>{o.userScore}</td>
+                </tr>}
                 )}
                 </tbody>
               </table>
