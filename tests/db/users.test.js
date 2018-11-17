@@ -1,6 +1,8 @@
 import expect from "expect";
 const Users = require('../../server/db/users');
 
+beforeEach(() => {Users.resetAllUsers();});
+
 
 describe('Create a user and then find the created user', () => {
   it('Create a user and then find the created user', () => {

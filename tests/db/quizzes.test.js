@@ -1,6 +1,7 @@
 import expect from "expect";
 const Quizzes = require('../../server/db/quizzes');
 
+beforeEach(() => {Quizzes.resetQuizzes();});
 
 describe('Create & update a quiz and then find it', () => {
   it('Create & update a quiz and then find it', () => {

@@ -1,6 +1,7 @@
 import expect from "expect";
 const Matches = require('../../server/db/matches');
 
+beforeEach(() => {Matches.resetMatches();});
 
 describe('Test create & update a match', () => {
   it('Create & update a match', () => {
