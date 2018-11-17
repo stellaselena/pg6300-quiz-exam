@@ -1,3 +1,5 @@
+//code adapted from https://github.com/arcuri82/pg6300/blob/master/les11/connect4-v2/src/server/ws/tokens.js
+
 const crypto = require("crypto");
 
 const tokens = new Map();
@@ -5,25 +7,25 @@ const tokens = new Map();
 
 const randomId = () => {
 
-    return crypto.randomBytes(10).toString('hex');
+  return crypto.randomBytes(10).toString('hex');
 };
 
 const createToken = (userId) =>{
 
-    const t = randomId();
+  const t = randomId();
 
-    tokens.set(t, userId);
+  tokens.set(t, userId);
 
-    return t;
+  return t;
 };
 
 const consumeToken = (t) => {
 
-    const userId = tokens.get(t);
+  const userId = tokens.get(t);
 
-    tokens.delete(t);
+  tokens.delete(t);
 
-    return userId;
+  return userId;
 };
 
 

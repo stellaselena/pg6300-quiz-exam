@@ -87,11 +87,11 @@ class Match {
         + " in match " + this.matchId);
 
       if (data === null || data === undefined) {
-        socket.emit("update", {error: "No payload provided"});
+        socket.emit("error", {error: "No payload provided"});
         return;
       }
       if (data.userId === undefined || data.userId === null) {
-        socket.emit("update", {error: "No userId provided"});
+        socket.emit("error", {error: "No userId provided"});
       }
 
       if (data.matchId !== this.matchId) {
@@ -99,7 +99,7 @@ class Match {
         return;
       }
       if (data.round !== this.quiz.round) {
-        socket.emit("update", {error: "Invalid operation"});
+        socket.emit("error", {error: "Invalid operation"});
         console.log("Invalid round: " + data.round + " !== " + this.quiz.round);
         return;
       }

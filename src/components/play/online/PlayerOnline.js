@@ -1,5 +1,3 @@
-
-
 export  class PlayerOnline{
 
     setSocket(socket){

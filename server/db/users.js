@@ -1,5 +1,7 @@
 
 //Dummy db, without proper way of handling passwords
+//Code adapted from https://github.com/arcuri82/pg6300/blob/master/les11/connect4-v2/src/server/db/users.js
+
 const admin = {
   id: "admin",
   password: "admin"

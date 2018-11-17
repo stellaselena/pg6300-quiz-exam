@@ -26,7 +26,7 @@ export class ManageQuizPage extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.quiz.id != state.quiz.id) {
+    if (props.quiz.id !== state.quiz.id) {
       return props.quiz;
     }
     return null;
@@ -56,7 +56,6 @@ export class ManageQuizPage extends React.Component {
       errors.question = 'Question must be at least 5 characters long.';
       formIsValid = false;
     }
-    debugger;
     if(this.state.quiz.answers === undefined || this.state.quiz.answers.some(a => a.length < 5)){
       errors.answers = 'Answer must be at least 5 characters long.';
       formIsValid = false;
@@ -130,13 +129,13 @@ ManageQuizPage.propTypes = {
 };
 
 function getQuizById(quizzes, id) {
-  const quiz = quizzes.filter(quiz => quiz.id == id);
+  const quiz = quizzes.filter(quiz => quiz.id === id);
   if (quiz) return quiz[0]; 
   return null;
 }
 
 function mapStateToProps(state, ownProps) {
-  const quizId = ownProps.match.params.id; // from the path `/quiz/:id`
+  const quizId = ownProps.match.params.id;
 
   let quiz = {id: '', question: '', answers: Array(4).fill(""), correctAnswer: '', category: ''};
 

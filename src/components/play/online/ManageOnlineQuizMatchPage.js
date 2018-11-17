@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Redirect, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import * as matchActions from '../../../actions/matchActions';
 import * as authActions from '../../../actions/authActions';
 import OnlineQuizMatchPage from '../common/QuizMatchPage';
@@ -119,13 +119,18 @@ class ManageOnlineQuizMatchPage extends React.Component {
       this.setState({opponentIds:  [...this.state.opponentIds, data.opponentId]});
 
     });
+
     this.socket.on("currentScore", (dto) => {
-      debugger;
       if (dto === null || dto === undefined) {
         this.setState({error: "Invalid response from server"});
         return;
       }
       this.setState({opponentsScore:  dto});
+
+    });
+
+    this.socket.on("error", (dto) => {
+      this.setState({error: dto.error});
 
     });
 
@@ -151,6 +156,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
       this.setState({
         quiz: quiz,
+        canStart: false,
         loading: false,
         answerSelected,
         timeLeft: 10,
@@ -301,7 +307,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
           onAnswer={this.checkForCorrectAnswer}
           answerCorrect={this.state.answerSelected}
           disabled={this.state.loading}
-          // canStart={!this.state.canStart}
+          canStart={!this.state.canStart}
           opponentsScore={this.state.opponentsScore}
           buttonHidden={!this.state.isFirstPlayer}
           onStart={this.startMatch}

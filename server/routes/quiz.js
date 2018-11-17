@@ -5,9 +5,16 @@ const router = express.Router();
 
 router.post('/saveQuiz', function (req, res) {
   if(!req.user) {
-    res.status(401).send();
-    return;
+
+    if (req.user.id !== "admin") {
+      res.status(403).send();
+      return;
+    } else {
+      res.status(401).send();
+      return;
+    }
   }
+
   if (req.body.question.length < 5) {
     res.status(400).send(`Question must be at least 5 characters long.`);
   }

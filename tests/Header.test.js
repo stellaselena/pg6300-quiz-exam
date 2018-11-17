@@ -6,23 +6,15 @@ import {mount, shallow} from 'enzyme';
 import '../tools/testSetup';
 
 describe('Header', () => {
-  // Note how with shallow render you search for the
-  // React component tag
-  it('contains 6 NavLinks via shallow', () => {
-    // arrange
-    const numLinks = shallow(<Header loading={false} />).find('NavLink').length;
 
-    // assert
+  it('contains 6 NavLinks via shallow', () => {
+    const numLinks = shallow(<Header loading={false} />).find('NavLink').length;
     expect(numLinks).toEqual(4);
   });
 
-  // Note how with mount you search for the final
-  // rendered HTML since it generates the final DOM.
-  it('contains 6 anchors via mount', () => {
-    // arrange
-    const numAnchors = mount(<MemoryRouter><Header loading={false} /></MemoryRouter>).find('a').length;
 
-    // assert
+  it('contains 6 anchors via mount', () => {
+    const numAnchors = mount(<MemoryRouter><Header loading={false} /></MemoryRouter>).find('a').length;
     expect(numAnchors).toEqual(4);
   });
 

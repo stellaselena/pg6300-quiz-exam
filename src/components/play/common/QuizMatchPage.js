@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
-import QuizListRow from "../../quiz/QuizListRow";
 
 const QuizMatchPage = ({question, answers, opponentsScore, canStart, onNext, onAnswer, answerCorrect, disabled, buttonHidden, score, timeLeft, round, onStart}) => {
 

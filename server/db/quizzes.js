@@ -1,4 +1,4 @@
-const quizzes =  [
+let quizzes = [
     {
       id: "1",
       question: "How can you get the total number of arguments passed to a function",
@@ -154,4 +154,8 @@ function updateQuiz(id, question, answers, correctAnswer, category){
     return true;
 }
 
-module.exports = {updateQuiz, getQuizzes, createQuiz, getRandomQuiz};
+function resetQuizzes() {
+  quizzes = [];
+}
+
+module.exports = {updateQuiz, getQuizzes, createQuiz, getRandomQuiz, resetQuizzes};

@@ -1,3 +1,5 @@
+//code adapted from https://github.com/arcuri82/pg6300/blob/master/les11/connect4-v2/src/server/app.js
+
 import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
@@ -25,12 +27,12 @@ const compiler = webpack(config);
 
 // if (process.env.NODE_ENV !== 'production') {
 
-  app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath
-  }));
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
 
-  app.use(require('webpack-hot-middleware')(compiler));
+app.use(require('webpack-hot-middleware')(compiler));
 
 
 // }
@@ -44,19 +46,19 @@ app.use(express.static('public'));
 
 passport.use(new LocalStrategy(
   {
-      usernameField: 'userId',
-      passwordField: 'password'
+    usernameField: 'userId',
+    passwordField: 'password'
   },
   function (userId, password, done) {
 
-      const ok = Users.verifyUser(userId, password);
+    const ok = Users.verifyUser(userId, password);
 
-      if (!ok) {
-          return done(null, false, {message: 'Invalid username/password'});
-      }
+    if (!ok) {
+      return done(null, false, {message: 'Invalid username/password'});
+    }
 
-      const user = Users.getUser(userId);
-      return done(null, user);
+    const user = Users.getUser(userId);
+    return done(null, user);
   }
 ));
 
@@ -70,15 +72,14 @@ passport.deserializeUser(function (id, done) {
   const user = Users.getUser(id);
 
   if (user !== null) {
-      done(null, user);
+    done(null, user);
   } else {
-      done(null, false);
+    done(null, false);
   }
 });
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 
 app.use('/api', auth);

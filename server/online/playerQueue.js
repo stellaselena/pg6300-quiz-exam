@@ -1,3 +1,6 @@
+//Code adapted https://github.com/arcuri82/pg6300/blob/master/les11/connect4-v2/src/server/online/player_queue.js
+
+
 const queue = [];
 
 

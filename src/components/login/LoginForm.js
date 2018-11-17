@@ -53,8 +53,8 @@ const LoginForm = ({confirm, onConfirmChange, password, onPasswordChange, userId
 
 function getValidation(password, confirm) {
 	if(password !== undefined && password !== null && password.length >= 1){
-		if (confirm == password) return 'success';
-		else if (confirm != password) return 'error';
+    if (confirm === password) return 'success';
+    else if (confirm !== password) return 'error';
 	} 
 	return null;
 }	
