@@ -1,4 +1,4 @@
-const matches = [];
+let matches = [];
 
 function replaceAll(str, find, replace) {
   return str.replace(new RegExp(find, 'g'), replace);
@@ -47,7 +47,7 @@ function updateMatch(id, userId, score){
 }
 
 function resetMatches(){
-  this.matches = [];
+  matches = [];
 }
 
 module.exports = {updateMatch, getMatches, createMatch, resetMatches};

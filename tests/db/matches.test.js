@@ -8,8 +8,14 @@ describe('Test create & update a match', () => {
     const matchId = Matches.createMatch("foo", 30);
     Matches.updateMatch(matchId, "foo", 40);
 
-    const matches = Matches.getMatches();
+    let matches = Matches.getMatches();
     expect(matches.length).toBe(1);
+
+    Matches.resetMatches();
+
+    matches = Matches.getMatches();
+    expect(matches.length).toBe(0);
+
   });
 
 });
