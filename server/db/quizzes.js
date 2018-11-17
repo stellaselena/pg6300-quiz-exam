@@ -158,4 +158,4 @@ function resetQuizzes() {
   quizzes = [];
 }
 
-module.exports = {updateQuiz, getQuizzes, createQuiz, getRandomQuiz, resetQuizzes};
+module.exports = {updateQuiz, getQuizzes, createQuiz, getRandomQuiz, resetQuizzes, getQuiz};

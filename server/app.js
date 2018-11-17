@@ -25,8 +25,6 @@ app.use(bodyParser.json());
 
 const compiler = webpack(config);
 
-// if (process.env.NODE_ENV !== 'production') {
-
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath
@@ -35,14 +33,11 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(require('webpack-hot-middleware')(compiler));
 
 
-// }
-
 app.use(session({
   secret: 'a secret used to encrypt the session cookies',
   resave: false,
   saveUninitialized: false
 }));
-app.use(express.static('public'));
 
 passport.use(new LocalStrategy(
   {
