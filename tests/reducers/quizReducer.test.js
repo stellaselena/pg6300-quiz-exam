@@ -1,6 +1,6 @@
 import expect from 'expect';
-import quizReducer from '../src/reducers/quizReducer';
-import * as actions from '../src/actions/quizActions';
+import quizReducer from '../../src/reducers/quizReducer';
+import * as actions from '../../src/actions/quizActions';
 
 describe('Quiz Reducer', () => {
   it('should add quiz when passed CREATE_QUIZ_SUCCESS', () => {

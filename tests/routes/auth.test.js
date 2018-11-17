@@ -1,6 +1,6 @@
 import request from 'supertest';
-const app = require("../server/app");
-import Users from '../server/db/users';
+const app = require("../../server/app");
+import Users from '../../server/db/users';
 import React from 'react';
 import expect from 'expect';
 

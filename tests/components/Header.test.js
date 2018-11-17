@@ -1,9 +1,9 @@
 import React from 'react';
 import expect from 'expect';
-import Header from '../src/components/common/Header';
+import Header from '../../src/components/common/Header';
 import {MemoryRouter} from 'react-router-dom';
 import {mount, shallow} from 'enzyme';
-import '../tools/testSetup';
+import '../../tools/testSetup';
 
 describe('Header', () => {
 

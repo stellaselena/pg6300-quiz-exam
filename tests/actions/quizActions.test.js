@@ -1,6 +1,6 @@
 import expect from 'expect';
-import * as quizActions from '../src/actions/quizActions';
-import * as types from '../src/actions/actionTypes';
+import * as quizActions from '../../src/actions/quizActions';
+import * as types from '../../src/actions/actionTypes';
 import 'babel-polyfill';
 
 describe('Quiz Actions', () => {

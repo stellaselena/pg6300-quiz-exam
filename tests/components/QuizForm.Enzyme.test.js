@@ -1,8 +1,8 @@
 import expect from 'expect';
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import QuizForm from '../src/components/quiz/QuizForm';
-import '../tools/testSetup';
+import QuizForm from '../../src/components/quiz/QuizForm';
+import '../../tools/testSetup';
 
 function setup(saving) {
   const props = {

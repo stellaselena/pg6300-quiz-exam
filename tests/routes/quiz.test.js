@@ -1,10 +1,11 @@
 import request from 'supertest';
 import agent from 'superagent';
 
-const app = require("../server/app");
-import Matches from '../server/db/quizzes';
+const app = require("../../server/app");
+import Quizzes from '../../server/db/quizzes';
 import React from 'react';
 import expect from 'expect';
+import Users from "../../server/db/users";
 
 /*eslint-disable no-console */
 const errorHandler = function (err, req, res, next) {
@@ -13,12 +14,17 @@ const errorHandler = function (err, req, res, next) {
 };
 app.use(errorHandler);
 
-describe("Test get & create matches", () => {
+beforeEach(() => {
+  Quizzes.resetQuizzes();
+  Users.resetAllUsers();
+
+});
+
+
+describe("Test get, create & update quizzes", () => {
   let cookie;
 
-  it('Test create match and then verify' +
-    ' that get all matches return the match that' +
-    'was created  ', async () => {
+  it('Test create quiz and then update it ', async () => {
 
     let response = await request(app)
       .post('/api/signup')
@@ -27,39 +33,40 @@ describe("Test get & create matches", () => {
     cookie = response.headers['set-cookie'];
 
     response = await request(app)
-      .post('/api/saveMatch')
+      .post('/api/saveQuiz')
       .set('cookie', cookie)
       .send({
-        userId: "foo", score: 30
+        userId: "foo", question: 'question',
+        answers: ["a", "b", "c", "d"], correctAnswer: 1,
+        category: "Javascript"
       });
     expect(response.statusCode).toBe(200);
 
     response = await request(app)
-      .get('/api/getMatches')
-      .set('cookie', cookie);
-    expect(response.statusCode).toBe(200);
+      .put('/api/updateQuiz')
+      .set('cookie', cookie)
+      .send({
+        userId: "foo", id: "question", question: 'question',
+        answers: ["a", "b", "c", "d"], correctAnswer: 1,
+        category: "Javascript"
+      });
+    expect(response.statusCode).toBe(204);
 
   }).timeout(10000);
 
-  it('Test initialisation of an online match', async () => {
+  it('Test get quizzes ', async () => {
 
-    //sign up as foo
     let response = await request(app)
       .post('/api/signup')
-      .send({userId: "foobar", password: "123"});
+      .send({userId: "bar", password: "123"});
     expect(response.statusCode).toBe(204);
-    cookie = response.headers['set-cookie'];
+    let cookie = response.headers['set-cookie'];
 
-    //post to matches to initiate match,
-    //since the player queue is empty
-    //the expected response status code should be 200
     response = await request(app)
-      .post('/api/matches')
+      .get('/api/getQuizzes')
       .set('cookie', cookie);
     expect(response.statusCode).toBe(200);
-
   }).timeout(10000);
-
 });
 
 

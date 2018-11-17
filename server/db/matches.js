@@ -46,4 +46,8 @@ function updateMatch(id, userId, score){
   return true;
 }
 
-module.exports = {updateMatch, getMatches, createMatch};
+function resetMatches(){
+  this.matches = [];
+}
+
+module.exports = {updateMatch, getMatches, createMatch, resetMatches};

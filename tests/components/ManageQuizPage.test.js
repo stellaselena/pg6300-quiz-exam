@@ -1,8 +1,8 @@
 import React from 'react';
 import expect from 'expect';
 import {mount, shallow} from 'enzyme';
-import {ManageQuizPage} from '../src/components/quiz/ManageQuizPage';
-import '../tools/testSetup';
+import {ManageQuizPage} from '../../src/components/quiz/ManageQuizPage';
+import '../../tools/testSetup';
 
 describe ('Manage Quiz Page', () => {
   it('sets error message upon blur of empty question field', () => {
