@@ -1,8 +1,5 @@
 import webpack from 'webpack';
 import path from 'path';
-import marked from 'marked';
-
-const markdownRenderer = new marked.Renderer();
 
 export default {
   mode: 'development',
