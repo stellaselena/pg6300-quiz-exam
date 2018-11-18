@@ -124,7 +124,7 @@ class ManageQuizMatchPage extends React.Component {
     : toastr.warning('Wrong answer!');
 
     let quiz = Object.assign({}, this.state.quiz);
-    this.state.round !== 10 ? quiz.question = "Fetch new question" : quiz.question = "Match ended";
+    this.state.round !== 10 ? quiz.question = "Fetch new question" :  quiz.question = "Match ended";
 
     let score = answer === correctAnswer ? this.state.score + this.state.timeLeft : this.state.score;
 

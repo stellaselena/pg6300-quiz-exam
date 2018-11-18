@@ -40,4 +40,5 @@ describe('Quiz Reducer', () => {
     expect(untouchedQuiz.question).toEqual('A');
     expect(newState.length).toEqual(3);
   });
+
 });

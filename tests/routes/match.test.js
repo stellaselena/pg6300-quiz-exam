@@ -1,5 +1,4 @@
 import request from 'supertest';
-import agent from 'superagent';
 
 const app = require("../../server/app");
 import Matches from '../../server/db/matches';
@@ -45,7 +44,6 @@ describe("Test get & create matches", () => {
       .get('/api/getMatches')
       .set('cookie', cookie);
     expect(response.statusCode).toBe(200);
-
   }).timeout(10000);
 
   it('Test initialisation of an online match', async () => {

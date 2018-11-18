@@ -1,5 +1,4 @@
 import request from 'supertest';
-import agent from 'superagent';
 
 const app = require("../../server/app");
 import Quizzes from '../../server/db/quizzes';
