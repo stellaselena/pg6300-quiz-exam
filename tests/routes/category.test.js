@@ -16,7 +16,7 @@ describe("Test get categories", () => {
   it('Get categories', async () => {
 
     let response = await request(app)
-      .get('/api/getCategories');
+      .get('/api/categories');
     expect(response.statusCode).toBe(200);
     expect(response.body.categories.length).toBe(4);
 

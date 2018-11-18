@@ -7,7 +7,11 @@ const OngoingMatches = require('../online/ongoingMatches');
 
 const router = express.Router();
 
-router.post('/saveMatch', function (req, res) {
+router.post('/match', function (req, res) {
+  if (!req.user) {
+    res.status(401).send();
+    return;
+  }
   const created = Matches.createMatch(req.body.userId, req.body.score);
   if (!created) {
     res.status(400).send();
@@ -17,7 +21,11 @@ router.post('/saveMatch', function (req, res) {
 
 });
 
-router.put('/updateMatch', function (req, res) {
+router.put('/match', function (req, res) {
+  if (!req.user) {
+    res.status(401).send();
+    return;
+  }
   const updated = Matches.updateMatch(req.body.id, req.body.userId, req.body.score);
   if (!updated) {
     res.status(400).send();
@@ -27,7 +35,11 @@ router.put('/updateMatch', function (req, res) {
 
 });
 
-router.get('/getMatches', function (req, res) {
+router.get('/matches', function (req, res) {
+  if (!req.user) {
+    res.status(401).send();
+    return;
+  }
   const matches = Matches.getMatches();
   res.status(200).json({matches: matches});
 });

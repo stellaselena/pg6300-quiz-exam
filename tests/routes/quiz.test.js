@@ -32,7 +32,7 @@ describe("Test get, create & update quizzes", () => {
     cookie = response.headers['set-cookie'];
 
     response = await request(app)
-      .post('/api/saveQuiz')
+      .post('/api/quiz')
       .set('cookie', cookie)
       .send({
         userId: "foo", question: 'question',
@@ -42,7 +42,7 @@ describe("Test get, create & update quizzes", () => {
     expect(response.statusCode).toBe(200);
 
     response = await request(app)
-      .put('/api/updateQuiz')
+      .put('/api/quiz')
       .set('cookie', cookie)
       .send({
         userId: "foo", id: "question", question: 'question',
@@ -62,7 +62,7 @@ describe("Test get, create & update quizzes", () => {
     let cookie = response.headers['set-cookie'];
 
     response = await request(app)
-      .get('/api/getQuizzes')
+      .get('/api/quizzes')
       .set('cookie', cookie);
     expect(response.statusCode).toBe(200);
   }).timeout(10000);

@@ -3,7 +3,7 @@ const Categories = require('../db/categories');
 
 const router = express.Router();
 
-router.get('/getCategories', function(req, res){
+router.get('/categories', function(req, res){
   const categories = Categories.getAllCategories();
 
 

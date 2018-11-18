@@ -33,7 +33,7 @@ describe("Test get & create matches", () => {
     cookie = response.headers['set-cookie'];
 
     response = await request(app)
-      .post('/api/saveMatch')
+      .post('/api/match')
       .set('cookie', cookie)
       .send({
         userId: "foo", score: 30
@@ -41,7 +41,7 @@ describe("Test get & create matches", () => {
     expect(response.statusCode).toBe(200);
 
     response = await request(app)
-      .get('/api/getMatches')
+      .get('/api/matches')
       .set('cookie', cookie);
     expect(response.statusCode).toBe(200);
   }).timeout(10000);

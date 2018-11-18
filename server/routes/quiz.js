@@ -3,7 +3,7 @@ const Quizzes = require('../db/quizzes');
 
 const router = express.Router();
 
-router.post('/saveQuiz', function (req, res) {
+router.post('/quiz', function (req, res) {
   if(!req.user) {
 
     if (req.user.id !== "admin") {
@@ -27,10 +27,15 @@ router.post('/saveQuiz', function (req, res) {
 
 });
 
-router.put('/updateQuiz', function (req, res) {
+router.put('/quiz', function (req, res) {
   if(!req.user) {
-    res.status(401).send();
-    return;
+    if (req.user.id !== "admin") {
+      res.status(403).send();
+      return;
+    } else {
+      res.status(401).send();
+      return;
+    }
   }
   if (req.body.question.length < 5) {
     res.status(400).send(`Question must be at least 5 characters long.`);
@@ -44,13 +49,13 @@ router.put('/updateQuiz', function (req, res) {
 
 });
 
-router.get('/getQuizzes', function (req, res) {
+router.get('/quizzes', function (req, res) {
   const quizzes = Quizzes.getQuizzes();
   res.status(200).json({quizzes: quizzes});
 });
 
 
-router.get('/getRandomQuiz', function (req, res) {
+router.get('/randomQuiz', function (req, res) {
   const quiz = Quizzes.getRandomQuiz();
   if(!quiz){
     res.status(404).send();

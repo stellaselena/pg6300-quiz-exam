@@ -73,7 +73,7 @@ export function startMatch() {
 export function loadRandomQuiz() {
   return async function (dispatch) {
     dispatch(beginAjaxCall());
-    const url = "api/getRandomQuiz";
+    const url = "api/randomQuiz";
     await fetch(url, {
       method: "get",
       headers: {
@@ -95,7 +95,7 @@ export function loadRandomQuiz() {
 export function loadMatches() {
   return async function (dispatch) {
     dispatch(beginAjaxCall());
-    const url = "api/getMatches";
+    const url = "api/matches";
     await fetch(url, {
       method: "get",
       headers: {
@@ -126,7 +126,7 @@ export function saveMatch(match) {
         userId: match.userId,
         score: match.score
       };
-      url = "/api/saveMatch";
+      url = "/api/match";
       method = "post";
     } else {
       payload = {
@@ -134,7 +134,7 @@ export function saveMatch(match) {
         userId: match.userId,
         score: match.score
       };
-      url = "/api/updateMatch";
+      url = "/api/match";
       method = "put";
     }
     await fetch(url, {

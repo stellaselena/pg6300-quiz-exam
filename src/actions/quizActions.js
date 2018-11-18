@@ -16,7 +16,7 @@ export function updateQuizSuccess(quiz) {
 export function loadQuizzes() {
   return async function (dispatch) {
     dispatch(beginAjaxCall());
-    const url = "api/getQuizzes";
+    const url = "api/quizzes";
     await fetch(url, {
       method: "get",
       headers: {
@@ -49,7 +49,7 @@ export function saveQuiz(quiz) {
         correctAnswer: quiz.correctAnswer,
         category: quiz.category
       };
-      url = "/api/saveQuiz";
+      url = "/api/quiz";
       method = "post";
     } else {
       payload = {
@@ -59,7 +59,7 @@ export function saveQuiz(quiz) {
         correctAnswer: quiz.correctAnswer,
         category: quiz.category
       };
-      url = "/api/updateQuiz";
+      url = "/api/quiz";
       method = "put";
     }
     await fetch(url, {

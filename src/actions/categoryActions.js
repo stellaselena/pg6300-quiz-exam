@@ -8,7 +8,7 @@ export function loadCategoriesSuccess(categories) {
 export function loadCategories() {
   return async function (dispatch){
     dispatch(beginAjaxCall());
-    const url = "api/getCategories";
+    const url = "api/categories";
     const response = await fetch(url, {
         method: "get",
         headers: {

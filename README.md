@@ -12,13 +12,23 @@
 ## About the application:
 The topic of the application is about an online, multi-player quiz game. A registered user can either play alone or online.
 
+In addition to exam requirements, I added features such as:
+- Admin quiz administration page
+  - Administrators have the possibility to add new quizzes or update existing ones
+- Single player quiz match
+- High score board for online matches
+
 ##### Online match
 
 If X wishes to play online, X can initialise a new match and wait for other players to join. 
 
-Once there are enough other players (at least 1), X will be able to start a match. 
+Once there are enough other players (at least 1), X will be able to start the match. 
+
+Each time when a new player enters the initialised match, other players will be notified.
 
 Each match consists of 10 rounds, where players get points based on correct answers and how long they take to answer.
+
+When a player select an answer for a current round, the high score board will be updated and sorted by players score. 
 
 At the end of the 10th round, a player with most points will be declared as the winner.
 
@@ -31,13 +41,33 @@ Login as admin (`username: admin, password: admin`) to access quiz management pa
  
 New quizzes can be added or existing quizzes can be updated from the quiz management page.
 
-## How to
-1. `npm install` (dependency installation depends on internet speed & hardware, in my case it takes around 1 minute)
-2. `npm start`
-3. `npm run test` (runs all tests)
-3. `npm run jest` (measure coverage with Jest)
+#### Endpoints
+| **Path** | **Description** |
+|----------|-------
+|`POST` /login| requires userId && password
+|`POST` /signup| requires userId && password
+|`POST` /logout| 
+|`POST` /wstoken| returns a random token for current user
+|`POST` /user	| return current users id
+|`GET` /categories| returns all categories
+|`GET` /quizzes | returns all quizzes |
+|`GET` /randomQuiz | returns a random quiz |
+|`POST` /quiz | requires user to be admin, question, answers, correct answer and category, returns the id of the quiz |
+|`PUT` /quiz | requires user to be admin, id, question, answers, correct answer and category |
+|`POST` /match | requires user to be logged in, userId && score, returns id of match |
+|`PUT` /match | requires user to be logged in, id,userId && score, answers, correct answer and category |
+|`POST` /matches | requires user to be logged in,  player is added to the queue if empty, otherwise match will be initialised with player from the queue / the player will be added to the initialised match
+|`POST` /startmatch | requires user to be logged in, and to be the first player who initiated the match
 
-### Technologies used
+## How to
+1. `npm install` to install dependencies
+2. `npm start` (dev)
+3. `npm run test` (runs all tests)
+4. `npm run jest` (measure coverage with Jest)
+5. `npm run build` (prod)
+
+## Technologies used
+
 | **Dependencies** | **Usage**  |
 |----------|-------|
 |babel-polyfill| Polyfill for features that cannot be transpiled|
@@ -70,6 +100,6 @@ Refer to the comments in the code stating which code has been adapted from the c
 
 #### Challenges
 I experienced some weird behaviour when running tests, they would randomly fail
-with a timeout error. This occurred only on certain machines. I tried to reproduce the error
+with a timeout error. This occurred only on a certain machine. I tried to reproduce the error
 on other machines and Jenkins but to no avail. An ugly way of solving this issue is to either add
-a --timeout flag in the test script or to manually add timeout to functions and increase the default timeout of Mocha.
+a --timeout flag in the test script or to manually add timeout to functions to increase the default timeout of Mocha.
