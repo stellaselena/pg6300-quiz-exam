@@ -9,7 +9,7 @@
 ### Repository
 [Link to repository](https://github.com/stellaselena/PG6300-quiz-exam)
 
-## About the application:
+## About the application
 The topic of the application is about an online, multi-player quiz game. A registered user can either play alone or online.
 
 In addition to exam requirements, I added features such as:
@@ -19,7 +19,7 @@ In addition to exam requirements, I added features such as:
 - High score board for online matches
 - Chat for online matches
 
-##### Online match
+### Online match
 
 If X wishes to play online, X can initialise a new match and wait for other players to join. 
 
@@ -29,42 +29,43 @@ Each time when a new player enters the initialised match, other players will be 
 
 Each match consists of 10 rounds, where players get points based on correct answers and how long they take to answer.
 
-###### High score
+#### High score
 
 When a player select an answer for a current round, the high score board will be updated and sorted by players score. 
 
 At the end of the 10th round, a player with most points will be declared as the winner.
 
-###### Chat
+#### Chat
 
 When a match is initialised, players will be able to send messages to each other.
 
-##### Single player match
+### Single player match
 
 In order to play, a user has to register first.
 
-##### Quiz management page
+### Quiz management page
 Login as admin (`username: admin, password: admin`) to access quiz management page.
  
 New quizzes can be added or existing quizzes can be updated from the quiz management page.
 
-#### Endpoints
+## Endpoints
+
 | **Path** | **Description** |
 |----------|-------
-|`POST` /login| requires userId && password
-|`POST` /signup| requires userId && password
+|`POST` /login| requires userId & password
+|`POST` /signup| requires userId & password
 |`POST` /logout| 
 |`POST` /wstoken| returns a random token for current user
 |`POST` /user	| return current users id
 |`GET` /categories| returns all categories
-|`GET` /quizzes | returns all quizzes |
-|`GET` /randomQuiz | returns a random quiz |
-|`POST` /quiz | requires user to be admin, question, answers, correct answer and category, returns the id of the quiz |
-|`PUT` /quiz | requires user to be admin, id, question, answers, correct answer and category |
-|`POST` /match | requires user to be logged in, userId && score, returns id of match |
-|`PUT` /match | requires user to be logged in, id,userId && score, answers, correct answer and category |
+|`GET` /quizzes | returns all quizzes 
+|`GET` /randomQuiz | returns a random quiz 
+|`POST` /quiz | requires user to be admin, question, answers, correct answer and category, returns the id of the quiz 
+|`PUT` /quiz | requires user to be admin, id, question, answers, correct answer and category 
+|`POST` /match | requires user to be logged in, userId & score, returns id of match 
+|`PUT` /match | requires user to be logged in, matchId ,userId & score
 |`POST` /matches | requires user to be logged in,  player is added to the queue if empty, otherwise match will be initialised with player from the queue / the player will be added to the initialised match
-|`POST` /startmatch | requires user to be logged in, and to be the first player who initiated the match
+|`POST` /startmatch | requires user to be logged in and to be the first player who initiated the match
 
 ## How to
 1. `npm install` to install dependencies
@@ -76,37 +77,41 @@ New quizzes can be added or existing quizzes can be updated from the quiz manage
 ## Technologies used
 
 | **Dependencies** | **Usage**  |
-|----------|-------|
-|babel-polyfill| Polyfill for features that cannot be transpiled|
-|enzyme|  Testing utilities for React|
-|eslint| JS Linter|
+|----------|-------
+|babel-polyfill| Polyfill for features that cannot be transpiled
+|enzyme|  Testing utilities for React
+|eslint| JS Linter
 |express| Serves development and production builds
 |jest	| Testing library
 |mocha| Testing library
-|react | React library |
-|react-dom|DOM rendering |
-|react-redux|Connecting React components to Redux |
-|react-router|Routing |
-|react-router-redux|Keep React Router in sync with Redux|
-|redux| Redux library |
-|redux-thunk| Async redux library|
-|socket.io| Real-time bidirectional event-based communication|
+|react | React library 
+|react-dom|DOM rendering 
+|react-redux|Connecting React components to Redux 
+|react-router|Routing 
+|react-router-redux|Keep React Router in sync with Redux
+|redux| Redux library 
+|redux-thunk| Async redux library
+|socket.io| Real-time bidirectional event-based communication
 |webpack| Bundler with plugin system and integrated dev server
 |webpack-dev-middleware	| Webpack middleware support 
 |webpack-hot-middleware	| webpack hot reloading
 
 These are some of the main dependencies used for this project, in addition to some other useful libraries.
   
-#### Boilerplate
-Boilerplate for React + Redux, with Babel, hot reloading and linting adapted from
+### Boilerplate
+Boilerplate for React + Redux, with Babel, hot reloading and linting adapted from 
 https://github.com/coryhouse/pluralsight-redux-starter.
 
-#### Code provided in class
+### Code provided in class
 Some of the code was adapted from the main repository of the PG6300 course: https://github.com/arcuri82/pg6300.
 Refer to the comments in the code stating which code has been adapted from the course.
 
-#### Challenges
+### Challenges
 I experienced some weird behaviour when running tests, they would randomly fail
 with a timeout error. This occurred only on a certain machine. I tried to reproduce the error
 on other machines and Jenkins but to no avail. An ugly way of solving this issue is to either add
 a --timeout flag in the test script or to manually add timeout to functions to increase the default timeout of Mocha.
+
+### Improvements
+- Add more tests
+- Implement redux socket middleware

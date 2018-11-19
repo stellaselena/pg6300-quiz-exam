@@ -30,7 +30,7 @@ const QuizMatchPage = ({question, answers, opponentsScore, canStart, onNext, onA
   };
 
   return (
-    <div className="container ">
+    <div className="container quiz-match ">
       <div className="row">
         <div className="col-md-3">
           <h2 className="match-stats text-center"><b>Time left: {timeLeft} s</b></h2>
