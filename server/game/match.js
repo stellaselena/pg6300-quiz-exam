@@ -81,6 +81,7 @@ class Match {
     const socket = this.sockets.get(userId);
 
     socket.removeAllListeners("answer");
+    socket.removeAllListeners("message");
 
     socket.on('answer', data => {
       console.log("Handling answer from '" + data.userId + "' for round " + data.round
@@ -130,10 +131,49 @@ class Match {
         }
       }
     });
+
+    socket.on('message', data => {
+      console.log("Received message from '" + data.userId
+        + " in match " + this.matchId);
+
+      if (data === null || data === undefined) {
+        socket.emit("error", {error: "No payload provided"});
+        return;
+      }
+      if (data.userId === undefined || data.userId === null) {
+        socket.emit("error", {error: "No userId provided"});
+      }
+
+      if (data.matchId !== this.matchId) {
+        console.log("Invalid matchId: " + data.matchId + " !== " + this.matchId);
+        return;
+      }
+
+      if (data.message === null || data.message === undefined) {
+        socket.emit("error", {error: "No payload provided"});
+        return;
+      }
+
+      const payload = {
+        userId: data.userId,
+        message: data.message
+      };
+
+      this.playerIds.forEach(p => this.sendMessage(p, payload));
+
+    });
+
   }
 
   opponentIds(userId) {
     return this.playerIds.filter(p => p !== userId);
+  }
+  sendMessage(userId, payload){
+    console.log("Sending message to '" + userId);
+
+    const socket = this.sockets.get(userId);
+
+    socket.emit("newMessage", payload);
   }
 
   sendScore(userId){

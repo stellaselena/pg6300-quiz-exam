@@ -34,7 +34,6 @@ export class ManageQuizPage extends React.Component {
 
   updateQuizState(event) {
     const field = event.target.name;
-    // Fix: Clone state to avoid manipulating below.
     let quiz = Object.assign({}, this.state.quiz);
 
     if(field.includes("answer_")){

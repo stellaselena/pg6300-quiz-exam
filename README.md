@@ -17,6 +17,7 @@ In addition to exam requirements, I added features such as:
   - Administrators have the possibility to add new quizzes or update existing ones
 - Single player quiz match
 - High score board for online matches
+- Chat for online matches
 
 ##### Online match
 
@@ -28,11 +29,17 @@ Each time when a new player enters the initialised match, other players will be 
 
 Each match consists of 10 rounds, where players get points based on correct answers and how long they take to answer.
 
+###### High score
+
 When a player select an answer for a current round, the high score board will be updated and sorted by players score. 
 
 At the end of the 10th round, a player with most points will be declared as the winner.
 
-##### Singleplayer match
+###### Chat
+
+When a match is initialised, players will be able to send messages to each other.
+
+##### Single player match
 
 In order to play, a user has to register first.
 

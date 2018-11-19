@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import * as matchActions from '../../../actions/matchActions';
 import * as authActions from '../../../actions/authActions';
-import OnlineQuizMatchPage from '../common/QuizMatchPage';
+import QuizMatchPage from '../common/QuizMatchPage';
 import toastr from 'toastr';
 import openSocket from 'socket.io-client';
 import {PlayerOnline} from "./PlayerOnline";
@@ -39,13 +39,19 @@ class ManageOnlineQuizMatchPage extends React.Component {
       opponentIds: null,
       isFirstPlayer: false,
       canStart: false,
-      opponentsScore: []
+      opponentsScore: [],
+      messages: [],
+      message: "",
+      initialised: false
 
     };
 
     this.checkForCorrectAnswer = this.checkForCorrectAnswer.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.startMatch = this.startMatch.bind(this);
+    this.updateInput = this.updateInput.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+
     this.opponent = new PlayerOnline();
 
   }
@@ -96,7 +102,8 @@ class ManageOnlineQuizMatchPage extends React.Component {
         loading: true,
         matchId: data.matchId,
         opponentIds: data.opponentIds,
-        isFirstPlayer: data.isFirstPlayer
+        isFirstPlayer: data.isFirstPlayer,
+        initialised: true
 
       });
 
@@ -117,6 +124,16 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
       toastr.info("Player " + data.opponentId + " has joined");
       this.setState({opponentIds:  [...this.state.opponentIds, data.opponentId]});
+
+    });
+
+    this.socket.on("newMessage", (dto) => {
+      if (dto === null || dto === undefined) {
+        this.setState({error: "Invalid response from server"});
+        return;
+      }
+
+      this.setState({messages:  [...this.state.messages, dto]});
 
     });
 
@@ -251,6 +268,23 @@ class ManageOnlineQuizMatchPage extends React.Component {
     }, 1000);
   }
 
+  updateInput(event) {
+    const message = event.target.value;
+    this.setState({
+      message: message
+    });
+  }
+
+  onKeyPress(event){
+    if (event.key === 'Enter') {
+      this.opponent.sendMessage(this.props.userId, this.state.matchId, this.state.message);
+      this.setState({
+        message: ""
+      });
+    }
+
+  }
+
   checkForCorrectAnswer(event) {
     event.preventDefault();
     clearInterval(this.interval);
@@ -284,7 +318,6 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
   render() {
     if (this.state.error) {
-      debugger;
         return (
           <div className="container text-center"><h1>{this.state.error}</h1>
           </div>
@@ -300,7 +333,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
     return (
       <div>
-        <OnlineQuizMatchPage
+        <QuizMatchPage
           question={this.state.quiz.question}
           answers={this.state.quiz.answers}
           correctAnswer={this.state.quiz.correctAnswer}
@@ -314,6 +347,11 @@ class ManageOnlineQuizMatchPage extends React.Component {
           score={this.state.score}
           timeLeft={this.state.timeLeft}
           round={this.state.round}
+          messages={this.state.messages}
+          onChange={this.updateInput}
+          onKeyPress={this.onKeyPress}
+          message={this.state.message}
+          initialised={!this.state.initialised}
         />
       </div>
 

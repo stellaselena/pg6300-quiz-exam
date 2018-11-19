@@ -17,4 +17,12 @@ export  class PlayerOnline{
       });
 
     }
+
+    sendMessage(userId, matchId, message) {
+      this.socket.emit('message', {
+        userId: userId,
+        matchId: matchId,
+        message: message
+      });
+    }
 }

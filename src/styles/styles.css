@@ -59,6 +59,43 @@ a.active {
 
 }
 
+ul{
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 250px;
+  min-height: 50px;
+  overflow-x:auto;
+  overflow-y:auto;
+  position:relative;
+}
+ul li{
+  list-style:none;
+  margin-left:0;
+  padding:6px;
+  color: black;
+  overflow-x:auto;
+  overflow-y:auto;
+}
+
+li a{
+  color: black;
+}
+
+li:last-child {
+  position:sticky;
+  bottom:0;
+}
+
+.player-score{
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 250px;
+  min-height: 50px;
+  overflow-x:auto;
+  overflow-y:auto;
+  position:relative;
+}
+
 
 @media (min-width: 768px){
   .navbar {
