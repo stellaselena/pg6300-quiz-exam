@@ -1,3 +1,4 @@
+//code adapted from https://github.com/coryhouse/pluralsight-redux-starter/blob/master/tools/testSetup.js
 /*eslint-disable no-var */
 process.env.NODE_ENV = 'test';
 require('babel-register')();

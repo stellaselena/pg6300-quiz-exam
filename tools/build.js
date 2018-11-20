@@ -1,3 +1,4 @@
+//code adapted from https://github.com/coryhouse/pluralsight-redux-app-used-to-build-script/blob/master/tools/build.js
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config.prod';
 import colors from 'colors';

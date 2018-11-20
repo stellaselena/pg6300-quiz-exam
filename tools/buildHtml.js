@@ -1,3 +1,4 @@
+//code adapted from https://github.com/coryhouse/pluralsight-redux-app-used-to-build-script/blob/master/tools/buildHtml.js
 import fs from 'fs';
 import cheerio from 'cheerio';
 import colors from 'colors';

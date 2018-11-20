@@ -1,3 +1,4 @@
+//code adapted from https://github.com/coryhouse/pluralsight-redux-starter/blob/master/webpack.config.dev.js
 import webpack from 'webpack';
 import path from 'path';
 
