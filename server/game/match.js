@@ -38,8 +38,11 @@ class Match {
     console.log("registering listeners and sending state to players");
     this.playerIds.forEach(p => {
       this.registerListener(p);
+    });
+    this.playerIds.forEach(p => {
       this.sendInitialState(p);
     });
+
   }
 
   start() {
@@ -194,10 +197,10 @@ class Match {
       }
     };
 
-    console.log("Sending initial state to '" + userId + "' for match " + this.matchId);
-
     const socket = this.sockets.get(userId);
     socket.emit('matchAvailable', payload);
+    console.log("Sending initial state to '" + userId + "' for match " + this.matchId);
+
   }
 
   sendFinishedState(userId) {
@@ -269,7 +272,9 @@ class Match {
         this.playerIds.forEach(p => this.sendFinishedState(p));
       } else {
         this.quiz.nextRound(round);
-        this.playerIds.forEach(p => this.sendState(p));
+        this.playerIds.forEach(p =>{
+          this.sendState(p) ;
+        });
         round++;
 
       }

@@ -11,7 +11,7 @@ class AboutPage extends React.Component {
               <p><a href="https://stella-quiz-app.herokuapp.com">Link to heroku app</a></p>
               <h3 id="repository">Repository</h3>
               <p><a href="https://github.com/stellaselena/PG6300-quiz-exam">Link to repository</a></p>
-              <h2 id="about-the-application-">About the application</h2>
+              <h2 id="about-the-application">About the application</h2>
               <p>The topic of the application is about an online, multi-player quiz game. A registered user can either play alone or online.</p>
               <p>In addition to exam requirements, I added features such as:</p>
               <ul>
@@ -80,15 +80,15 @@ class AboutPage extends React.Component {
                 </tr>
                 <tr>
                   <td><code>POST</code> /quiz</td>
-                  <td>requires user to be admin, question, answers, correct answer and category, returns the id of the quiz </td>
+                  <td>requires admin, question, answers, correct answer and category, returns id</td>
                 </tr>
                 <tr>
                   <td><code>PUT</code> /quiz</td>
-                  <td>requires user to be admin, id, question, answers, correct answer and category </td>
+                  <td>requires admin, id, question, answers, correct answer and category </td>
                 </tr>
                 <tr>
                   <td><code>POST</code> /match</td>
-                  <td>requires user to be logged in, userId &amp; score, returns id of match </td>
+                  <td>requires user to be logged in, userId &amp; score, returns match id </td>
                 </tr>
                 <tr>
                   <td><code>PUT</code> /match</td>
@@ -96,11 +96,11 @@ class AboutPage extends React.Component {
                 </tr>
                 <tr>
                   <td><code>POST</code> /matches</td>
-                  <td>requires user to be logged in,  player is added to the queue if empty, otherwise match will be initialised with player from the queue / the player will be added to the initialised match</td>
+                  <td>requires user to be logged in, if queue is not empty match will be initialised with player from queue / player will be added to the initialised match</td>
                 </tr>
                 <tr>
                   <td><code>POST</code> /startmatch</td>
-                  <td>requires user to be logged in and to be the first player who initiated the match</td>
+                  <td>requires user to be logged in and first player who initiated the match</td>
                 </tr>
                 </tbody>
               </table>
@@ -109,8 +109,8 @@ class AboutPage extends React.Component {
                 <li><code>npm install</code> to install dependencies</li>
                 <li><code>npm run dev</code> (dev)</li>
                 <li><code>npm run test</code> (runs all tests) (optional)</li>
-                <li><code>npm run jest</code> (measure coverage with Jest)(optional)</li>
-                <li><code>npm start</code> (prod)(optional)</li>
+                <li><code>npm run jest</code> (measure coverage with Jest) (optional)</li>
+                <li><code>npm start</code> (prod) (optional)</li>
               </ol>
               <h2 id="technologies-used">Technologies used</h2>
               <table className="table">
@@ -123,11 +123,11 @@ class AboutPage extends React.Component {
                 <tbody>
                 <tr>
                   <td>babel-polyfill</td>
-                  <td>Polyfill for features that cannot be transpiled</td>
+                  <td>Polyfill</td>
                 </tr>
                 <tr>
                   <td>enzyme</td>
-                  <td>Testing utilities for React</td>
+                  <td>Testing utilities</td>
                 </tr>
                 <tr>
                   <td>eslint</td>
@@ -155,7 +155,7 @@ class AboutPage extends React.Component {
                 </tr>
                 <tr>
                   <td>react-redux</td>
-                  <td>Connecting React components to Redux </td>
+                  <td>Connecting React to Redux </td>
                 </tr>
                 <tr>
                   <td>react-router</td>
@@ -182,24 +182,30 @@ class AboutPage extends React.Component {
                   <td>Bundler with plugin system and integrated dev server</td>
                 </tr>
                 <tr>
-                  <td>webpack-dev-middleware </td>
+                  <td>webpack-dev-middleware</td>
                   <td>Webpack middleware support </td>
                 </tr>
                 <tr>
-                  <td>webpack-hot-middleware </td>
-                  <td>Webpack hot reloading </td>
+                  <td>webpack-hot-middleware</td>
+                  <td>webpack hot reloading</td>
                 </tr>
                 </tbody>
               </table>
-              <p>These are some of the main dependencies used for this project, in addition to some other useful libraries.</p>
-              <h3 id="boilerplate">Boilerplate</h3>
-              <p>Boilerplate for React + Redux, with Babel, hot reloading and linting adapted from: <a href="https://github.com/coryhouse/pluralsight-redux-starter">https://github.com/coryhouse/pluralsight-redux-starter</a>.</p>
-              <h3 id="code-provided-in-class">Code provided in class</h3>
-              <p>Some of the code was adapted from the main repository of the PG6300 course: <a href="https://github.com/arcuri82/pg6300">https://github.com/arcuri82/pg6300</a>.
-                Refer to the comments in the code stating which code has been adapted from the course.</p>
+              <p>These are some of dependencies used for this project in addition to other libraries.</p>
+              <h3 id="boilerplate-code-provided-in-class">Boilerplate &amp; Code provided in class</h3>
+              <ul>
+                <li><a href="https://github.com/arcuri82/pg6300">https://github.com/arcuri82/pg6300</a>.<ul>
+                  <li>Some of the code was adapted from the main repository of the PG6300 course. Refer to the comments in the code stating which code has been adapted from the course.</li>
+                </ul>
+                </li>
+                <li><a href="https://github.com/coryhouse/pluralsight-redux-starter">https://github.com/coryhouse/pluralsight-redux-starter</a><ul>
+                  <li>React &amp; Redux boilerplate. Some of the code was adapted during initial setup, such as babel, hot reloading and linting.</li>
+                </ul>
+                </li>
+              </ul>
               <h3 id="challenges">Challenges</h3>
-              <p>I experienced some weird behaviour when running tests, they would randomly fail
-                with a timeout error. This occurred only on a certain machine. I tried to reproduce the error
+              <p>I experienced some weird behaviour when running tests on my laptop, they would randomly fail
+                with a timeout error. I tried to reproduce the error
                 on other machines and Jenkins but to no avail. An ugly way of solving this issue is to either add
                 a --timeout flag in the test script or to manually add timeout to functions to increase the default timeout of Mocha.</p>
               <h3 id="improvements">Improvements</h3>

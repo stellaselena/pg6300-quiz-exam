@@ -17,14 +17,14 @@ class ManageOnlineQuizMatchPage extends React.Component {
     this.state = {
       quiz: {
         id: '',
-        question: '',
+        question: 'Waiting for other players to join',
         answers: Array(4).fill(""),
         correctAnswer: '',
         category: ''
       },
       error: null,
       redirect: false,
-      loading: false,
+      loading: true,
       answerSelected: {
         id: "",
         correct: false,
@@ -57,6 +57,8 @@ class ManageOnlineQuizMatchPage extends React.Component {
   }
 
   componentDidMount() {
+
+
     const userId = this.props.userId;
 
     if (userId === null) {
@@ -64,17 +66,27 @@ class ManageOnlineQuizMatchPage extends React.Component {
       return;
     }
 
-    if (this.state.matchId === null) {
-      let quiz = Object.assign({}, this.state.quiz);
-      quiz.question = "Waiting for other players to join";
-
-      this.setState({
-        quiz: quiz,
-        loading: true
-      });
-    }
-
     this.socket = openSocket(window.location.origin);
+
+    this.opponent.setSocket(this.socket);
+
+    this.props.actions.websocketLogin(this.socket).then(response => {
+      if (response === 401) {
+        this.setState({error: "You should log in first"});
+      } else if (response === 201) {
+        setTimeout(() => {
+          this.props.actions.initialiseMatch().then(() => {
+            this.setState({
+              isFirstPlayer: this.props.firstPlayer === this.props.userId
+            });
+          });
+        }, 500);
+
+      } else {
+        this.setState({error: "Error when connecting to server"});
+      }
+    });
+
 
     this.socket.on('disconnect', () => {
       this.setState({error: "Disconnected from Server"});
@@ -226,27 +238,11 @@ class ManageOnlineQuizMatchPage extends React.Component {
 
     });
 
-    this.props.actions.websocketLogin(this.socket).then(response => {
-      if (response === 401) {
-        this.setState({error: "You should log in first"});
-        return;
-      } else if (response !== 201) {
-        this.setState({error: "Error when connecting to server"});
-        return;
-      } else {
-        this.props.actions.initialiseMatch().then(() => {
-          this.setState({
-            isFirstPlayer: this.props.firstPlayer === this.props.userId
-          });
-        });
-      }
-    });
-
     this.opponent.setSocket(this.socket);
 
   }
 
-  componentWillUnmount() {
+  componentWillUnmount()  {
     this.socket.disconnect();
     clearInterval(this.interval);
 

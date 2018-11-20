@@ -3,7 +3,7 @@ const app = require("../../server/app");
 import Users from '../../server/db/users';
 import React from 'react';
 import expect from 'expect';
-
+//code from https://github.com/arcuri82/pg6300/blob/master/les11/connect4-v2/tests/server/auth.test.js
 /*eslint-disable no-console */
 const errorHandler = function(err, req, res, next){
     console.log(err.stack);

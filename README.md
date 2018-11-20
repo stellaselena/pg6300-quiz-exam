@@ -60,12 +60,12 @@ New quizzes can be added or existing quizzes can be updated from the quiz manage
 |`GET` /categories| returns all categories
 |`GET` /quizzes | returns all quizzes 
 |`GET` /randomQuiz | returns a random quiz 
-|`POST` /quiz | requires user to be admin, question, answers, correct answer and category, returns the id of the quiz 
-|`PUT` /quiz | requires user to be admin, id, question, answers, correct answer and category 
-|`POST` /match | requires user to be logged in, userId & score, returns id of match 
+|`POST` /quiz | requires admin, question, answers, correct answer and category, returns id
+|`PUT` /quiz | requires admin, id, question, answers, correct answer and category 
+|`POST` /match | requires user to be logged in, userId & score, returns match id 
 |`PUT` /match | requires user to be logged in, matchId ,userId & score
-|`POST` /matches | requires user to be logged in,  player is added to the queue if empty, otherwise match will be initialised with player from the queue / the player will be added to the initialised match
-|`POST` /startmatch | requires user to be logged in and to be the first player who initiated the match
+|`POST` /matches | requires user to be logged in, if queue is not empty match will be initialised with player from queue / player will be added to the initialised match
+|`POST` /startmatch | requires user to be logged in and first player who initiated the match
 
 ## How to
 1. `npm install` to install dependencies
@@ -78,15 +78,15 @@ New quizzes can be added or existing quizzes can be updated from the quiz manage
 
 | **Dependencies** | **Usage**  |
 |----------|-------
-|babel-polyfill| Polyfill for features that cannot be transpiled
-|enzyme|  Testing utilities for React
+|babel-polyfill| Polyfill
+|enzyme|  Testing utilities
 |eslint| JS Linter
 |express| Serves development and production builds
 |jest	| Testing library
 |mocha| Testing library
 |react | React library 
 |react-dom|DOM rendering 
-|react-redux|Connecting React components to Redux 
+|react-redux|Connecting React to Redux 
 |react-router|Routing 
 |react-router-redux|Keep React Router in sync with Redux
 |redux| Redux library 
@@ -96,19 +96,17 @@ New quizzes can be added or existing quizzes can be updated from the quiz manage
 |webpack-dev-middleware	| Webpack middleware support 
 |webpack-hot-middleware	| webpack hot reloading
 
-These are some of the main dependencies used for this project, in addition to some other useful libraries.
+These are some of dependencies used for this project in addition to other libraries.
   
-### Boilerplate
-Boilerplate for React + Redux, with Babel, hot reloading and linting adapted from 
-https://github.com/coryhouse/pluralsight-redux-starter.
-
-### Code provided in class
-Some of the code was adapted from the main repository of the PG6300 course: https://github.com/arcuri82/pg6300.
-Refer to the comments in the code stating which code has been adapted from the course.
+### Boilerplate & Code provided in class
+- https://github.com/arcuri82/pg6300.
+  - Some of the code was adapted from the main repository of the PG6300 course. Refer to the comments in the code stating which code has been adapted from the course.
+- https://github.com/coryhouse/pluralsight-redux-starter
+  - React & Redux boilerplate. Some of the code was adapted during initial setup, such as babel, hot reloading and linting.
 
 ### Challenges
-I experienced some weird behaviour when running tests, they would randomly fail
-with a timeout error. This occurred only on a certain machine. I tried to reproduce the error
+I experienced some weird behaviour when running tests on my laptop, they would randomly fail
+with a timeout error. I tried to reproduce the error
 on other machines and Jenkins but to no avail. An ugly way of solving this issue is to either add
 a --timeout flag in the test script or to manually add timeout to functions to increase the default timeout of Mocha.
 
