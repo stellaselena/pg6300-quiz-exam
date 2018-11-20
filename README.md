@@ -69,10 +69,10 @@ New quizzes can be added or existing quizzes can be updated from the quiz manage
 
 ## How to
 1. `npm install` to install dependencies
-2. `npm start` (dev)
-3. `npm run test` (runs all tests)
-4. `npm run jest` (measure coverage with Jest)
-5. `npm run build` (prod)
+2. `npm run dev` (dev)
+3. `npm run test` (runs all tests) (optional)
+4. `npm run jest` (measure coverage with Jest) (optional)
+5. `npm start` (prod) (optional)
 
 ## Technologies used
 

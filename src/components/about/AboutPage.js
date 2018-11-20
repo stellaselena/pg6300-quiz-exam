@@ -107,10 +107,10 @@ class AboutPage extends React.Component {
               <h2 id="how-to">How to</h2>
               <ol>
                 <li><code>npm install</code> to install dependencies</li>
-                <li><code>npm start</code> (dev)</li>
-                <li><code>npm run test</code> (runs all tests)</li>
-                <li><code>npm run jest</code> (measure coverage with Jest)</li>
-                <li><code>npm run build</code> (prod)</li>
+                <li><code>npm run dev</code> (dev)</li>
+                <li><code>npm run test</code> (runs all tests) (optional)</li>
+                <li><code>npm run jest</code> (measure coverage with Jest)(optional)</li>
+                <li><code>npm start</code> (prod)(optional)</li>
               </ol>
               <h2 id="technologies-used">Technologies used</h2>
               <table className="table">

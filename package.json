@@ -4,7 +4,8 @@
   "description": "PG6300 exam",
   "scripts": {
     "prestart": "babel-node tools/startMessage.js",
-    "start": "npm-run-all --parallel test:watch open:src lint:watch",
+    "start": "npm run build",
+    "dev": "npm-run-all --parallel test:watch open:src lint:watch",
     "open:src": "babel-node server/srcServer.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools tests server",
     "lint:watch": "npm run lint -- --watch",
