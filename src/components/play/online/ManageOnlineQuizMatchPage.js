@@ -222,7 +222,7 @@ class ManageOnlineQuizMatchPage extends React.Component {
       setTimeout(() => {
         this.props.history.push("/");
 
-      },5000);
+      },1000);
 
     });
 

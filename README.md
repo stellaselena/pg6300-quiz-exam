@@ -113,5 +113,6 @@ on other machines and Jenkins but to no avail. An ugly way of solving this issue
 a --timeout flag in the test script or to manually add timeout to functions to increase the default timeout of Mocha.
 
 ### Improvements
-- Add more tests
+- Add websocket tests
 - Implement redux socket middleware
+- Connect to a real database using Docker

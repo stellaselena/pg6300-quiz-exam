@@ -204,8 +204,9 @@ class AboutPage extends React.Component {
                 a --timeout flag in the test script or to manually add timeout to functions to increase the default timeout of Mocha.</p>
               <h3 id="improvements">Improvements</h3>
               <ul>
-                <li>Add more tests</li>
+                <li>Add websocket tests</li>
                 <li>Implement redux socket middleware</li>
+                <li>Connect to a real database using Docker</li>
               </ul>
 
             </div>
